@@ -153,8 +153,11 @@ function assertValidFlags(flags) {
  */
 class Config {
   /**
-   * @param {LH.Config.Json=} configJSON
+   * Resolves the provided config (inherits from extended config, if set), resolves
+   * all referenced modules, and validates.
+   * @param {LH.Config.Json=} configJSON If not provided, uses the default config.
    * @param {LH.Flags=} flags
+   * @return {Promise<Config>}
    */
   static async fromJson(configJSON, flags) {
     const status = {msg: 'Create config', id: 'lh:init:config'};
