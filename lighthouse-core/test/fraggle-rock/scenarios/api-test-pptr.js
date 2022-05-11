@@ -50,7 +50,7 @@ describe('Fraggle Rock API', () => {
       expect(accessibility.score).toBeLessThan(1);
 
       const {auditResults, erroredAudits, failedAudits} = getAuditsBreakdown(lhr);
-      expect(auditResults.map(audit => audit.id)).toMatchSnapshot();
+      expect(auditResults.map(audit => audit.id).sort()).toMatchSnapshot();
 
       expect(erroredAudits).toHaveLength(0);
       expect(failedAudits.map(audit => audit.id)).toContain('label');
@@ -89,9 +89,9 @@ describe('Fraggle Rock API', () => {
         failedAudits,
         notApplicableAudits,
       } = getAuditsBreakdown(lhr);
-      expect(auditResults.map(audit => audit.id)).toMatchSnapshot();
+      expect(auditResults.map(audit => audit.id).sort()).toMatchSnapshot();
 
-      expect(notApplicableAudits.map(audit => audit.id)).toMatchSnapshot();
+      expect(notApplicableAudits.map(audit => audit.id).sort()).toMatchSnapshot();
       expect(notApplicableAudits.map(audit => audit.id)).not.toContain('total-blocking-time');
 
       expect(erroredAudits).toHaveLength(0);
@@ -141,9 +141,9 @@ describe('Fraggle Rock API', () => {
       });
 
       const {auditResults, erroredAudits, notApplicableAudits} = getAuditsBreakdown(result.lhr);
-      expect(auditResults.map(audit => audit.id)).toMatchSnapshot();
+      expect(auditResults.map(audit => audit.id).sort()).toMatchSnapshot();
 
-      expect(notApplicableAudits.map(audit => audit.id)).toMatchSnapshot();
+      expect(notApplicableAudits.map(audit => audit.id).sort()).toMatchSnapshot();
       expect(notApplicableAudits.map(audit => audit.id)).not.toContain('total-blocking-time');
 
       expect(erroredAudits).toHaveLength(0);
@@ -171,7 +171,7 @@ describe('Fraggle Rock API', () => {
       });
 
       const {auditResults, failedAudits, erroredAudits} = getAuditsBreakdown(lhr);
-      expect(auditResults.map(audit => audit.id)).toMatchSnapshot();
+      expect(auditResults.map(audit => audit.id).sort()).toMatchSnapshot();
       expect(erroredAudits).toHaveLength(0);
 
       const failedAuditIds = failedAudits.map(audit => audit.id);
@@ -216,7 +216,7 @@ describe('Fraggle Rock API', () => {
       });
 
       const {auditResults, failedAudits, erroredAudits} = getAuditsBreakdown(lhr);
-      expect(auditResults.map(audit => audit.id)).toMatchSnapshot();
+      expect(auditResults.map(audit => audit.id).sort()).toMatchSnapshot();
       expect(erroredAudits).toHaveLength(0);
 
       const failedAuditIds = failedAudits.map(audit => audit.id);
