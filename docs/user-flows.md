@@ -250,7 +250,7 @@ The below example codifies a user flow for an ecommerce site where the user navi
 
 ![Lighthouse User Flows Diagram](https://user-images.githubusercontent.com/6752989/168678568-69aaa82f-0459-4c2a-8f46-467d7f06d237.png)
 
-### Code
+### Complete user Flow Code
 
 ```js
 import {writeFileSync} from 'fs';
