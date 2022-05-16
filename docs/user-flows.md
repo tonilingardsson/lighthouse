@@ -51,7 +51,7 @@ DevTools
 
 1. Go to the page you want to test
 2. Select "Navigation (Default)" as your mode
-3. Click "Analyze page load".
+3. Click "Analyze page load"
 
 > Note: DevTools only generates a report for a standalone navigation, it cannot be combined with other steps in a user flow report.
 
