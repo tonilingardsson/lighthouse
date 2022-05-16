@@ -306,10 +306,6 @@ async function main() {
 main();
 ```
 
-## DevTools Panel
-
-The Lighthouse DevTools panel can be used to get navigation, timespan and snapshot reports. Select the mode you want
-
 ## Tips and Tricks
 
 - Keep timespan recordings _short_ and focused on a single interaction sequence or page transition.
