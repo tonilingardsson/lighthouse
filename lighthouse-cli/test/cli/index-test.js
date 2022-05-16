@@ -82,8 +82,46 @@ describe('CLI Tests', function() {
   });
 
   describe('print-config', () => {
+    describe('fraggle rock', () => {
+      it('should print the default config and exit immediately after', () => {
+        const flags = [
+          indexPath,
+          '--print-config',
+        ];
+        const ret = spawnSync('node', flags, {encoding: 'utf8'});
+
+        const config = JSON.parse(ret.stdout);
+        assert.strictEqual(config.settings.output[0], 'html');
+        assert.strictEqual(config.settings.auditMode, false);
+
+        expect(config).toMatchSnapshot();
+      });
+
+      it('should print the overridden config and exit immediately after', () => {
+        const flags = [
+          '--print-config', '-A',
+          '--output', 'json',
+          '--only-audits', 'metrics',
+        ];
+        const ret = spawnSync('node', [indexPath, ...flags], {encoding: 'utf8'});
+
+        const config = JSON.parse(ret.stdout);
+        assert.strictEqual(config.settings.output[0], 'json');
+        assert.strictEqual(config.settings.auditMode, true);
+        // FR config doesn't exclude full-page-screenshot with --only-audits
+        assert.strictEqual(config.audits.length, 2);
+
+        expect(config).toMatchSnapshot();
+      });
+    });
+
     it('should print the default config and exit immediately after', () => {
-      const ret = spawnSync('node', [indexPath, '--print-config'], {encoding: 'utf8'});
+      const flags = [
+        indexPath,
+        '--print-config',
+        '--legacy-navigation',
+      ];
+      const ret = spawnSync('node', flags, {encoding: 'utf8'});
 
       const config = JSON.parse(ret.stdout);
       assert.strictEqual(config.settings.output[0], 'html');
@@ -97,6 +135,7 @@ describe('CLI Tests', function() {
         '--print-config', '-A',
         '--output', 'json',
         '--only-audits', 'metrics',
+        '--legacy-navigation',
       ];
       const ret = spawnSync('node', [indexPath, ...flags], {encoding: 'utf8'});
 
