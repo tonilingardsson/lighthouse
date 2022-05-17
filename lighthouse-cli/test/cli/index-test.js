@@ -83,20 +83,6 @@ describe('CLI Tests', function() {
 
   describe('print-config', () => {
     describe('fraggle rock', () => {
-      it('should print the default config and exit immediately after', () => {
-        const flags = [
-          indexPath,
-          '--print-config',
-        ];
-        const ret = spawnSync('node', flags, {encoding: 'utf8'});
-
-        const config = JSON.parse(ret.stdout);
-        assert.strictEqual(config.settings.output[0], 'html');
-        assert.strictEqual(config.settings.auditMode, false);
-
-        expect(config).toMatchSnapshot();
-      });
-
       it('should print the overridden config and exit immediately after', () => {
         const flags = [
           '--print-config', '-A',
@@ -115,26 +101,11 @@ describe('CLI Tests', function() {
       });
     });
 
-    it('should print the default config and exit immediately after', () => {
-      const flags = [
-        indexPath,
-        '--print-config',
-        '--legacy-navigation',
-      ];
-      const ret = spawnSync('node', flags, {encoding: 'utf8'});
-
-      const config = JSON.parse(ret.stdout);
-      assert.strictEqual(config.settings.output[0], 'html');
-      assert.strictEqual(config.settings.auditMode, false);
-
-      expect(config).toMatchSnapshot();
-    });
-
     it('should print the overridden config and exit immediately after', () => {
       const flags = [
         '--print-config', '-A',
         '--output', 'json',
-        '--only-audits', 'metrics',
+        '--only-audits', 'charset',
         '--legacy-navigation',
       ];
       const ret = spawnSync('node', [indexPath, ...flags], {encoding: 'utf8'});
