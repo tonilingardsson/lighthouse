@@ -44,10 +44,6 @@ Object {
       "id": "FontSize",
     },
     Object {
-      "gatherer": "full-page-screenshot",
-      "id": "FullPageScreenshot",
-    },
-    Object {
       "gatherer": "global-listeners",
       "id": "GlobalListeners",
     },
@@ -138,6 +134,10 @@ Object {
     Object {
       "gatherer": "trace-compat",
       "id": "traces",
+    },
+    Object {
+      "gatherer": "full-page-screenshot",
+      "id": "FullPageScreenshot",
     },
   ],
   "audits": Array [
@@ -1613,10 +1613,6 @@ Object {
       "id": "Trace",
     },
     Object {
-      "gatherer": "full-page-screenshot",
-      "id": "FullPageScreenshot",
-    },
-    Object {
       "gatherer": "stacks",
       "id": "Stacks",
     },
@@ -1627,6 +1623,10 @@ Object {
     Object {
       "gatherer": "trace-compat",
       "id": "traces",
+    },
+    Object {
+      "gatherer": "full-page-screenshot",
+      "id": "FullPageScreenshot",
     },
   ],
   "audits": Array [
