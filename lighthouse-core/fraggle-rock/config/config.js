@@ -289,12 +289,19 @@ function getConfigDisplayString(config) {
 
   if (jsonConfig.navigations) {
     for (const navigation of jsonConfig.navigations) {
-      for (const artifactDefn of navigation.artifacts) {
+      for (let i = 0; i < navigation.artifacts.length; ++i) {
         // @ts-expect-error Breaking the Config.AnyArtifactDefn type.
-        artifactDefn.gatherer = undefined;
-        // @ts-expect-error Breaking the Config.AnyArtifactDefn type.
-        artifactDefn.instance = undefined;
+        navigation.artifacts[i] = navigation.artifacts[i].id;
       }
+    }
+  }
+
+  if (jsonConfig.artifacts) {
+    for (const artifactDefn of jsonConfig.artifacts) {
+      // @ts-expect-error Breaking the Config.AnyArtifactDefn type.
+      artifactDefn.gatherer = artifactDefn.gatherer.path;
+      // Dependencies are not declared on Config JSON
+      artifactDefn.dependencies = undefined;
     }
   }
 

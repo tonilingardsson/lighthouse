@@ -4,555 +4,139 @@ exports[`CLI Tests print-config fraggle rock should print the default config and
 Object {
   "artifacts": Array [
     Object {
-      "gatherer": Object {
-        "instance": Object {
-          "_messageLog": Object {
-            "_filter": Object {},
-            "_isRecording": false,
-            "_messages": Array [],
-          },
-          "meta": Object {
-            "supportedModes": Array [
-              "timespan",
-              "navigation",
-            ],
-          },
-        },
-        "path": "devtools-log",
-      },
+      "gatherer": "devtools-log",
       "id": "DevtoolsLog",
     },
     Object {
-      "gatherer": Object {
-        "instance": Object {
-          "_trace": Object {
-            "traceEvents": Array [],
-          },
-          "meta": Object {
-            "supportedModes": Array [
-              "timespan",
-              "navigation",
-            ],
-          },
-        },
-        "path": "trace",
-      },
+      "gatherer": "trace",
       "id": "Trace",
     },
     Object {
-      "gatherer": Object {
-        "instance": Object {
-          "meta": Object {
-            "supportedModes": Array [
-              "snapshot",
-              "navigation",
-            ],
-          },
-        },
-        "path": "accessibility",
-      },
+      "gatherer": "accessibility",
       "id": "Accessibility",
     },
     Object {
-      "gatherer": Object {
-        "instance": Object {
-          "meta": Object {
-            "supportedModes": Array [
-              "snapshot",
-              "navigation",
-            ],
-          },
-        },
-        "path": "anchor-elements",
-      },
+      "gatherer": "anchor-elements",
       "id": "AnchorElements",
     },
     Object {
-      "gatherer": Object {
-        "instance": Object {
-          "_logEntries": Array [],
-          "meta": Object {
-            "supportedModes": Array [
-              "timespan",
-              "navigation",
-            ],
-          },
-        },
-        "path": "console-messages",
-      },
+      "gatherer": "console-messages",
       "id": "ConsoleMessages",
     },
     Object {
-      "gatherer": Object {
-        "instance": Object {
-          "_stylesheets": Array [],
-          "meta": Object {
-            "supportedModes": Array [
-              "snapshot",
-              "timespan",
-              "navigation",
-            ],
-          },
-        },
-        "path": "css-usage",
-      },
+      "gatherer": "css-usage",
       "id": "CSSUsage",
     },
     Object {
-      "gatherer": Object {
-        "instance": Object {
-          "meta": Object {
-            "supportedModes": Array [
-              "snapshot",
-              "navigation",
-            ],
-          },
-        },
-        "path": "dobetterweb/doctype",
-      },
+      "gatherer": "dobetterweb/doctype",
       "id": "Doctype",
     },
     Object {
-      "gatherer": Object {
-        "instance": Object {
-          "meta": Object {
-            "supportedModes": Array [
-              "snapshot",
-              "navigation",
-            ],
-          },
-        },
-        "path": "dobetterweb/domstats",
-      },
+      "gatherer": "dobetterweb/domstats",
       "id": "DOMStats",
     },
     Object {
-      "gatherer": Object {
-        "instance": Object {
-          "meta": Object {
-            "supportedModes": Array [
-              "snapshot",
-              "navigation",
-            ],
-          },
-        },
-        "path": "seo/embedded-content",
-      },
+      "gatherer": "seo/embedded-content",
       "id": "EmbeddedContent",
     },
     Object {
-      "gatherer": Object {
-        "instance": Object {
-          "meta": Object {
-            "supportedModes": Array [
-              "snapshot",
-              "navigation",
-            ],
-          },
-        },
-        "path": "seo/font-size",
-      },
+      "gatherer": "seo/font-size",
       "id": "FontSize",
     },
     Object {
-      "gatherer": Object {
-        "instance": Object {
-          "meta": Object {
-            "supportedModes": Array [
-              "snapshot",
-              "timespan",
-              "navigation",
-            ],
-          },
-        },
-        "path": "full-page-screenshot",
-      },
+      "gatherer": "full-page-screenshot",
       "id": "FullPageScreenshot",
     },
     Object {
-      "gatherer": Object {
-        "instance": Object {
-          "meta": Object {
-            "supportedModes": Array [
-              "snapshot",
-              "timespan",
-              "navigation",
-            ],
-          },
-        },
-        "path": "global-listeners",
-      },
+      "gatherer": "global-listeners",
       "id": "GlobalListeners",
     },
     Object {
-      "gatherer": Object {
-        "instance": Object {
-          "_naturalSizeCache": Object {},
-          "meta": Object {
-            "supportedModes": Array [
-              "snapshot",
-              "timespan",
-              "navigation",
-            ],
-          },
-        },
-        "path": "image-elements",
-      },
+      "gatherer": "image-elements",
       "id": "ImageElements",
     },
     Object {
-      "gatherer": Object {
-        "instance": Object {
-          "meta": Object {
-            "supportedModes": Array [
-              "snapshot",
-              "navigation",
-            ],
-          },
-        },
-        "path": "installability-errors",
-      },
+      "gatherer": "installability-errors",
       "id": "InstallabilityErrors",
     },
     Object {
-      "dependencies": Object {
-        "DevtoolsLog": Object {
-          "id": "DevtoolsLog",
-        },
-      },
-      "gatherer": Object {
-        "instance": Object {
-          "_issues": Array [],
-          "meta": Object {
-            "dependencies": Object {},
-            "supportedModes": Array [
-              "timespan",
-              "navigation",
-            ],
-          },
-        },
-        "path": "inspector-issues",
-      },
+      "gatherer": "inspector-issues",
       "id": "InspectorIssues",
     },
     Object {
-      "gatherer": Object {
-        "instance": Object {
-          "_scriptUsages": Array [],
-          "meta": Object {
-            "supportedModes": Array [
-              "snapshot",
-              "timespan",
-              "navigation",
-            ],
-          },
-        },
-        "path": "js-usage",
-      },
+      "gatherer": "js-usage",
       "id": "JsUsage",
     },
     Object {
-      "dependencies": Object {
-        "DevtoolsLog": Object {
-          "id": "DevtoolsLog",
-        },
-      },
-      "gatherer": Object {
-        "instance": Object {
-          "meta": Object {
-            "dependencies": Object {},
-            "supportedModes": Array [
-              "timespan",
-              "navigation",
-            ],
-          },
-        },
-        "path": "link-elements",
-      },
+      "gatherer": "link-elements",
       "id": "LinkElements",
     },
     Object {
-      "dependencies": Object {
-        "DevtoolsLog": Object {
-          "id": "DevtoolsLog",
-        },
-      },
-      "gatherer": Object {
-        "instance": Object {
-          "meta": Object {
-            "dependencies": Object {},
-            "supportedModes": Array [
-              "navigation",
-            ],
-          },
-        },
-        "path": "main-document-content",
-      },
+      "gatherer": "main-document-content",
       "id": "MainDocumentContent",
     },
     Object {
-      "gatherer": Object {
-        "instance": Object {
-          "meta": Object {
-            "supportedModes": Array [
-              "snapshot",
-              "navigation",
-            ],
-          },
-        },
-        "path": "meta-elements",
-      },
+      "gatherer": "meta-elements",
       "id": "MetaElements",
     },
     Object {
-      "dependencies": Object {
-        "DevtoolsLog": Object {
-          "id": "DevtoolsLog",
-        },
-      },
-      "gatherer": Object {
-        "instance": Object {
-          "_encodingStartAt": 0,
-          "meta": Object {
-            "dependencies": Object {},
-            "supportedModes": Array [
-              "timespan",
-              "navigation",
-            ],
-          },
-        },
-        "path": "dobetterweb/optimized-images",
-      },
+      "gatherer": "dobetterweb/optimized-images",
       "id": "OptimizedImages",
     },
     Object {
-      "gatherer": Object {
-        "instance": Object {
-          "meta": Object {
-            "supportedModes": Array [
-              "snapshot",
-              "navigation",
-            ],
-          },
-        },
-        "path": "dobetterweb/password-inputs-with-prevented-paste",
-      },
+      "gatherer": "dobetterweb/password-inputs-with-prevented-paste",
       "id": "PasswordInputsWithPreventedPaste",
     },
     Object {
-      "dependencies": Object {
-        "DevtoolsLog": Object {
-          "id": "DevtoolsLog",
-        },
-      },
-      "gatherer": Object {
-        "instance": Object {
-          "meta": Object {
-            "dependencies": Object {},
-            "supportedModes": Array [
-              "timespan",
-              "navigation",
-            ],
-          },
-        },
-        "path": "dobetterweb/response-compression",
-      },
+      "gatherer": "dobetterweb/response-compression",
       "id": "ResponseCompression",
     },
     Object {
-      "gatherer": Object {
-        "instance": Object {
-          "meta": Object {
-            "supportedModes": Array [
-              "snapshot",
-              "navigation",
-            ],
-          },
-        },
-        "path": "seo/robots-txt",
-      },
+      "gatherer": "seo/robots-txt",
       "id": "RobotsTxt",
     },
     Object {
-      "gatherer": Object {
-        "instance": Object {
-          "meta": Object {
-            "supportedModes": Array [
-              "navigation",
-            ],
-          },
-        },
-        "path": "service-worker",
-      },
+      "gatherer": "service-worker",
       "id": "ServiceWorker",
     },
     Object {
-      "gatherer": Object {
-        "instance": Object {
-          "_mainSessionId": null,
-          "_scriptContents": Array [],
-          "_scriptParsedEvents": Array [],
-          "meta": Object {
-            "supportedModes": Array [
-              "timespan",
-              "navigation",
-            ],
-          },
-        },
-        "path": "scripts",
-      },
+      "gatherer": "scripts",
       "id": "Scripts",
     },
     Object {
-      "gatherer": Object {
-        "instance": Object {
-          "_scriptParsedEvents": Array [],
-          "meta": Object {
-            "supportedModes": Array [
-              "timespan",
-              "navigation",
-            ],
-          },
-        },
-        "path": "source-maps",
-      },
+      "gatherer": "source-maps",
       "id": "SourceMaps",
     },
     Object {
-      "gatherer": Object {
-        "instance": Object {
-          "meta": Object {
-            "supportedModes": Array [
-              "snapshot",
-              "navigation",
-            ],
-          },
-        },
-        "path": "stacks",
-      },
+      "gatherer": "stacks",
       "id": "Stacks",
     },
     Object {
-      "dependencies": Object {
-        "DevtoolsLog": Object {
-          "id": "DevtoolsLog",
-        },
-      },
-      "gatherer": Object {
-        "instance": Object {
-          "meta": Object {
-            "dependencies": Object {},
-            "supportedModes": Array [
-              "navigation",
-            ],
-          },
-        },
-        "path": "dobetterweb/tags-blocking-first-paint",
-      },
+      "gatherer": "dobetterweb/tags-blocking-first-paint",
       "id": "TagsBlockingFirstPaint",
     },
     Object {
-      "gatherer": Object {
-        "instance": Object {
-          "meta": Object {
-            "supportedModes": Array [
-              "snapshot",
-              "navigation",
-            ],
-          },
-        },
-        "path": "seo/tap-targets",
-      },
+      "gatherer": "seo/tap-targets",
       "id": "TapTargets",
     },
     Object {
-      "dependencies": Object {
-        "Trace": Object {
-          "id": "Trace",
-        },
-      },
-      "gatherer": Object {
-        "instance": Object {
-          "animationIdToName": Object {},
-          "meta": Object {
-            "dependencies": Object {},
-            "supportedModes": Array [
-              "timespan",
-              "navigation",
-            ],
-          },
-        },
-        "path": "trace-elements",
-      },
+      "gatherer": "trace-elements",
       "id": "TraceElements",
     },
     Object {
-      "gatherer": Object {
-        "instance": Object {
-          "meta": Object {
-            "supportedModes": Array [
-              "snapshot",
-              "timespan",
-              "navigation",
-            ],
-          },
-        },
-        "path": "viewport-dimensions",
-      },
+      "gatherer": "viewport-dimensions",
       "id": "ViewportDimensions",
     },
     Object {
-      "gatherer": Object {
-        "instance": Object {
-          "meta": Object {
-            "supportedModes": Array [
-              "snapshot",
-              "navigation",
-            ],
-          },
-        },
-        "path": "web-app-manifest",
-      },
+      "gatherer": "web-app-manifest",
       "id": "WebAppManifest",
     },
     Object {
-      "dependencies": Object {
-        "DevtoolsLog": Object {
-          "id": "DevtoolsLog",
-        },
-      },
-      "gatherer": Object {
-        "instance": Object {
-          "meta": Object {
-            "dependencies": Object {},
-            "supportedModes": Array [
-              "timespan",
-              "navigation",
-            ],
-          },
-        },
-        "path": "devtools-log-compat",
-      },
+      "gatherer": "devtools-log-compat",
       "id": "devtoolsLogs",
     },
     Object {
-      "dependencies": Object {
-        "Trace": Object {
-          "id": "Trace",
-        },
-      },
-      "gatherer": Object {
-        "instance": Object {
-          "meta": Object {
-            "dependencies": Object {},
-            "supportedModes": Array [
-              "timespan",
-              "navigation",
-            ],
-          },
-        },
-        "path": "trace-compat",
-      },
+      "gatherer": "trace-compat",
       "id": "traces",
     },
   ],
@@ -1928,153 +1512,40 @@ Object {
   "navigations": Array [
     Object {
       "artifacts": Array [
-        Object {
-          "id": "DevtoolsLog",
-        },
-        Object {
-          "id": "Trace",
-        },
-        Object {
-          "id": "Accessibility",
-        },
-        Object {
-          "id": "AnchorElements",
-        },
-        Object {
-          "id": "ConsoleMessages",
-        },
-        Object {
-          "id": "CSSUsage",
-        },
-        Object {
-          "id": "Doctype",
-        },
-        Object {
-          "id": "DOMStats",
-        },
-        Object {
-          "id": "EmbeddedContent",
-        },
-        Object {
-          "id": "FontSize",
-        },
-        Object {
-          "id": "GlobalListeners",
-        },
-        Object {
-          "id": "ImageElements",
-        },
-        Object {
-          "id": "InstallabilityErrors",
-        },
-        Object {
-          "dependencies": Object {
-            "DevtoolsLog": Object {
-              "id": "DevtoolsLog",
-            },
-          },
-          "id": "InspectorIssues",
-        },
-        Object {
-          "id": "JsUsage",
-        },
-        Object {
-          "dependencies": Object {
-            "DevtoolsLog": Object {
-              "id": "DevtoolsLog",
-            },
-          },
-          "id": "LinkElements",
-        },
-        Object {
-          "dependencies": Object {
-            "DevtoolsLog": Object {
-              "id": "DevtoolsLog",
-            },
-          },
-          "id": "MainDocumentContent",
-        },
-        Object {
-          "id": "MetaElements",
-        },
-        Object {
-          "dependencies": Object {
-            "DevtoolsLog": Object {
-              "id": "DevtoolsLog",
-            },
-          },
-          "id": "OptimizedImages",
-        },
-        Object {
-          "id": "PasswordInputsWithPreventedPaste",
-        },
-        Object {
-          "dependencies": Object {
-            "DevtoolsLog": Object {
-              "id": "DevtoolsLog",
-            },
-          },
-          "id": "ResponseCompression",
-        },
-        Object {
-          "id": "RobotsTxt",
-        },
-        Object {
-          "id": "ServiceWorker",
-        },
-        Object {
-          "id": "Scripts",
-        },
-        Object {
-          "id": "SourceMaps",
-        },
-        Object {
-          "id": "Stacks",
-        },
-        Object {
-          "dependencies": Object {
-            "DevtoolsLog": Object {
-              "id": "DevtoolsLog",
-            },
-          },
-          "id": "TagsBlockingFirstPaint",
-        },
-        Object {
-          "id": "TapTargets",
-        },
-        Object {
-          "dependencies": Object {
-            "Trace": Object {
-              "id": "Trace",
-            },
-          },
-          "id": "TraceElements",
-        },
-        Object {
-          "id": "ViewportDimensions",
-        },
-        Object {
-          "id": "WebAppManifest",
-        },
-        Object {
-          "dependencies": Object {
-            "DevtoolsLog": Object {
-              "id": "DevtoolsLog",
-            },
-          },
-          "id": "devtoolsLogs",
-        },
-        Object {
-          "dependencies": Object {
-            "Trace": Object {
-              "id": "Trace",
-            },
-          },
-          "id": "traces",
-        },
-        Object {
-          "id": "FullPageScreenshot",
-        },
+        "DevtoolsLog",
+        "Trace",
+        "Accessibility",
+        "AnchorElements",
+        "ConsoleMessages",
+        "CSSUsage",
+        "Doctype",
+        "DOMStats",
+        "EmbeddedContent",
+        "FontSize",
+        "GlobalListeners",
+        "ImageElements",
+        "InstallabilityErrors",
+        "InspectorIssues",
+        "JsUsage",
+        "LinkElements",
+        "MainDocumentContent",
+        "MetaElements",
+        "OptimizedImages",
+        "PasswordInputsWithPreventedPaste",
+        "ResponseCompression",
+        "RobotsTxt",
+        "ServiceWorker",
+        "Scripts",
+        "SourceMaps",
+        "Stacks",
+        "TagsBlockingFirstPaint",
+        "TapTargets",
+        "TraceElements",
+        "ViewportDimensions",
+        "WebAppManifest",
+        "devtoolsLogs",
+        "traces",
+        "FullPageScreenshot",
       ],
       "blankPage": "about:blank",
       "blockedUrlPatterns": Array [],
@@ -2134,108 +1605,27 @@ exports[`CLI Tests print-config fraggle rock should print the overridden config 
 Object {
   "artifacts": Array [
     Object {
-      "gatherer": Object {
-        "instance": Object {
-          "_messageLog": Object {
-            "_filter": Object {},
-            "_isRecording": false,
-            "_messages": Array [],
-          },
-          "meta": Object {
-            "supportedModes": Array [
-              "timespan",
-              "navigation",
-            ],
-          },
-        },
-        "path": "devtools-log",
-      },
+      "gatherer": "devtools-log",
       "id": "DevtoolsLog",
     },
     Object {
-      "gatherer": Object {
-        "instance": Object {
-          "_trace": Object {
-            "traceEvents": Array [],
-          },
-          "meta": Object {
-            "supportedModes": Array [
-              "timespan",
-              "navigation",
-            ],
-          },
-        },
-        "path": "trace",
-      },
+      "gatherer": "trace",
       "id": "Trace",
     },
     Object {
-      "gatherer": Object {
-        "instance": Object {
-          "meta": Object {
-            "supportedModes": Array [
-              "snapshot",
-              "timespan",
-              "navigation",
-            ],
-          },
-        },
-        "path": "full-page-screenshot",
-      },
+      "gatherer": "full-page-screenshot",
       "id": "FullPageScreenshot",
     },
     Object {
-      "gatherer": Object {
-        "instance": Object {
-          "meta": Object {
-            "supportedModes": Array [
-              "snapshot",
-              "navigation",
-            ],
-          },
-        },
-        "path": "stacks",
-      },
+      "gatherer": "stacks",
       "id": "Stacks",
     },
     Object {
-      "dependencies": Object {
-        "DevtoolsLog": Object {
-          "id": "DevtoolsLog",
-        },
-      },
-      "gatherer": Object {
-        "instance": Object {
-          "meta": Object {
-            "dependencies": Object {},
-            "supportedModes": Array [
-              "timespan",
-              "navigation",
-            ],
-          },
-        },
-        "path": "devtools-log-compat",
-      },
+      "gatherer": "devtools-log-compat",
       "id": "devtoolsLogs",
     },
     Object {
-      "dependencies": Object {
-        "Trace": Object {
-          "id": "Trace",
-        },
-      },
-      "gatherer": Object {
-        "instance": Object {
-          "meta": Object {
-            "dependencies": Object {},
-            "supportedModes": Array [
-              "timespan",
-              "navigation",
-            ],
-          },
-        },
-        "path": "trace-compat",
-      },
+      "gatherer": "trace-compat",
       "id": "traces",
     },
   ],
@@ -2349,34 +1739,12 @@ Object {
   "navigations": Array [
     Object {
       "artifacts": Array [
-        Object {
-          "id": "DevtoolsLog",
-        },
-        Object {
-          "id": "Trace",
-        },
-        Object {
-          "id": "Stacks",
-        },
-        Object {
-          "dependencies": Object {
-            "DevtoolsLog": Object {
-              "id": "DevtoolsLog",
-            },
-          },
-          "id": "devtoolsLogs",
-        },
-        Object {
-          "dependencies": Object {
-            "Trace": Object {
-              "id": "Trace",
-            },
-          },
-          "id": "traces",
-        },
-        Object {
-          "id": "FullPageScreenshot",
-        },
+        "DevtoolsLog",
+        "Trace",
+        "Stacks",
+        "devtoolsLogs",
+        "traces",
+        "FullPageScreenshot",
       ],
       "blankPage": "about:blank",
       "blockedUrlPatterns": Array [],

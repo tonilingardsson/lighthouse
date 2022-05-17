@@ -10,8 +10,10 @@ import {jest} from '@jest/globals';
 import BaseAudit from '../../../audits/audit.js';
 import constants from '../../../config/constants.js';
 import BaseGatherer from '../../../fraggle-rock/gather/base-gatherer.js';
-import {initializeConfig} from '../../../fraggle-rock/config/config.js';
+import {initializeConfig, getConfigDisplayString} from '../../../fraggle-rock/config/config.js';
 import {LH_ROOT} from '../../../../root.js';
+import format from '../../../../shared/localization/format.js';
+import defaultConfig from '../../../fraggle-rock/config/default-config.js';
 
 const {nonSimulatedPassConfigOverrides} = constants;
 
@@ -482,5 +484,70 @@ describe('Fraggle Rock Config', () => {
 
     const invocation = () => initializeConfig(extensionConfig, {gatherMode: 'navigation'});
     expect(invocation).toThrow(/did not support any gather modes/);
+  });
+});
+
+describe('getConfigDisplayString', () => {
+  it('doesn\'t include empty audit options in output', () => {
+    const aOpt = 'auditOption';
+    const configJson = {
+      extends: 'lighthouse:default',
+      passes: [{
+        passName: 'defaultPass',
+        gatherers: [
+          {path: 'script-elements'},
+        ],
+      }],
+      audits: [
+        // `options` merged into default `metrics` audit.
+        {path: 'metrics', options: {aOpt}},
+      ],
+    };
+
+    const {config} = initializeConfig(configJson, {gatherMode: 'navigation'});
+    const printed = getConfigDisplayString(config);
+    const printedConfig = JSON.parse(printed);
+
+    // Check that options weren't completely eliminated.
+    const metricsAudit = printedConfig.audits.find(/** @param {any} a */ a => a.path === 'metrics');
+    expect(metricsAudit.options.aOpt).toEqual(aOpt);
+
+    for (const audit of printedConfig.audits) {
+      if (audit.options) {
+        expect(audit.options).not.toEqual({});
+      }
+    }
+  });
+
+  it('returns localized category titles', () => {
+    const {config} = initializeConfig(undefined, {gatherMode: 'navigation'});
+    const printed = getConfigDisplayString(config);
+    const printedConfig = JSON.parse(printed);
+    let localizableCount = 0;
+
+    Object.entries(printedConfig.categories).forEach(([printedCategoryId, printedCategory]) => {
+      if (!defaultConfig.categories) throw new Error('Default config will have categories');
+      if (!defaultConfig.settings?.locale) throw new Error('Default config will have a locale');
+      const origTitle = defaultConfig.categories[printedCategoryId].title;
+      if (format.isIcuMessage(origTitle)) localizableCount++;
+      const i18nOrigTitle = format.getFormatted(origTitle, defaultConfig.settings.locale);
+
+      expect(printedCategory.title).toStrictEqual(i18nOrigTitle);
+    });
+
+    // Should have localized at least one string.
+    expect(localizableCount).toBeGreaterThan(0);
+  });
+
+  it('returns a valid ConfigJson that can make an identical Config', () => {
+    // depends on defaultConfig having a `path` for all gatherers and audits.
+    const {config: firstConfig} = initializeConfig(undefined, {gatherMode: 'navigation'});
+    const firstPrint = getConfigDisplayString(firstConfig);
+
+    const {config: secondConfig} =
+      initializeConfig(JSON.parse(firstPrint), {gatherMode: 'navigation'});
+    const secondPrint = getConfigDisplayString(secondConfig);
+
+    expect(firstPrint).toEqual(secondPrint);
   });
 });
