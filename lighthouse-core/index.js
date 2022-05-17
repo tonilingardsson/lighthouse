@@ -84,7 +84,7 @@ async function legacyNavigation(url, flags = {}, configJSON, userConnection) {
  *   the config may override certain settings based on the mode.
  * @return {LH.Config.FRConfig}
  */
-function generateConfig(configJson, flags, gatherMode = 'navigation') {
+function generateConfig(configJson, flags = {}, gatherMode = 'navigation') {
   const configContext = flagsToFRContext(flags);
   return initializeConfig(configJson, {...configContext, gatherMode}).config;
 }

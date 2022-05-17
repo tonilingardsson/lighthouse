@@ -577,11 +577,10 @@ function deepCloneConfigJson(json) {
 }
 
 /**
- * @param {LH.Flags|undefined} flags
- * @return {LH.Config.FRContext|undefined}
+ * @param {LH.Flags} flags
+ * @return {LH.Config.FRContext}
  */
 function flagsToFRContext(flags) {
-  if (!flags) return;
   return {
     configPath: flags?.configPath,
     settingsOverrides: flags,
