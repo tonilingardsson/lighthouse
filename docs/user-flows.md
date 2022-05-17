@@ -18,13 +18,13 @@ Lighthouse can now run in three modes: navigations, timespans, and snapshots. Ea
 * **Timespan mode** analyzes an arbitrary period of time, typically containing user interactions.
 * **Snapshot mode** analyzes the page in a particular state.
 
-| | Navigation | Timespan | Snapshot |
-|-|-|-|-|
-| | ![navigation](https://user-images.githubusercontent.com/39191/168926541-19b26f9e-a424-4bed-a1b4-4c40f4ad94fb.png) | ![snapshot](https://user-images.githubusercontent.com/39191/168926542-0a7446f6-b75a-4714-9d80-d484d5380335.png) | ![timespan](https://user-images.githubusercontent.com/39191/168926545-ad4a7fea-9964-4b76-81fd-fe01e3b47139.png) |
-| | ✅ Provides an overall performance score and all metrics.<br>✅ Contains the most advice of all report types (both time-based and state-based audits are available).<br>🤔 Cannot analyze form submissions or single page app transitions.<br>🤔 Cannot analyze content that isn't available immediately on page load.<br>👍 Obtain a Lighthouse Performance score.<br>👍 Measure Performance metrics (First Contentful Paint, Largest Contentful Paint, Speed Index, Time to Interactive, Cumulative Layout Shift, Total Blocking Time).<br>👍 Assess Progressive Web App capabilities.| ✅ Provides range-based metrics such as Total Blocking Time and Cumulative Layout Shift.<br>✅ Analyzes any period of time, including user interactions or single page app transitions.<br>🤔 Does not provide an overall performance score.<br>🤔 Cannot analyze moment-based performance metrics (e.g. Largest Contentful Paint).<br>🤔 Cannot analyze state-of-the-page issues (e.g. no Accessibility category)<br>👍 Measure layout shifts and JavaScript execution time on a series of interactions.<br>👍 Discover performance opportunities to improve the experience for long-lived pages and SPAs. | ✅ Analyzes the page in its current state.<br>🤔 Does not provide an overall performance score or metrics.<br>🤔 Cannot analyze any issues outside the current DOM (e.g. no network, main-thread, or performance analysis).<br>👍 Find accessibility issues in single page applications or complex forms.<br>👍 Evaluate best practices of menus and UI elements hidden behind interaction. |
-| | | | |
-| | | | |
-| | | | |
+
+|  |  |  |
+|---|---|---|
+|<td colspan=2>double
+| Navigation | ![navigation](https://user-images.githubusercontent.com/39191/168926541-19b26f9e-a424-4bed-a1b4-4c40f4ad94fb.png) | <small> ✅ Provides an overall performance score and all metrics.<br>✅ Contains the most advice of all report types (both time-based and state-based audits are available).<br>🤔 Cannot analyze form submissions or single page app transitions.<br>🤔 Cannot analyze content that isn't available immediately on page load.<br>👍 Obtain a Lighthouse Performance score.<br>👍 Measure Performance metrics (First Contentful Paint, Largest Contentful Paint, Speed Index, Time to Interactive, Cumulative Layout Shift, Total Blocking Time).<br>👍 Assess Progressive Web App capabilities.</small> |
+| Timespan | ![timespan](https://user-images.githubusercontent.com/39191/168926545-ad4a7fea-9964-4b76-81fd-fe01e3b47139.png) | ✅ Provides range-based metrics such as Total Blocking Time and Cumulative Layout Shift.<br>✅ Analyzes any period of time, including user interactions or single page app transitions.<br>🤔 Does not provide an overall performance score.<br>🤔 Cannot analyze moment-based performance metrics (e.g. Largest Contentful Paint).<br>🤔 Cannot analyze state-of-the-page issues (e.g. no Accessibility category)<br>👍 Measure layout shifts and JavaScript execution time on a series of interactions.<br>👍 Discover performance opportunities to improve the experience for long-lived pages and SPAs. |
+| Snapshot |  ![snapshot](https://user-images.githubusercontent.com/39191/168926542-0a7446f6-b75a-4714-9d80-d484d5380335.png) | ✅ Analyzes the page in its current state.<br>🤔 Does not provide an overall performance score or metrics.<br>🤔 Cannot analyze any issues outside the current DOM (e.g. no network, main-thread, or performance analysis).<br>👍 Find accessibility issues in single page applications or complex forms.<br>👍 Evaluate best practices of menus and UI elements hidden behind interaction. |
 
 
 
@@ -32,17 +32,7 @@ Lighthouse can now run in three modes: navigations, timespans, and snapshots. Ea
 
 ### Navigation
 
-Navigation reports analyze a single page load. Navigation is the most common type of report you'll see. In fact, all Lighthouse reports prior to v9 are navigation reports.
 
-#### Benefits
-
-✅ Provides an overall performance score and all metrics.
-✅ Contains the most advice of all report types (both time-based and state-based audits are available).
-🤔 Cannot analyze form submissions or single page app transitions.
-🤔 Cannot analyze content that isn't available immediately on page load.
-👍 Obtain a Lighthouse Performance score.
-👍 Measure Performance metrics (First Contentful Paint, Largest Contentful Paint, Speed Index, Time to Interactive, Cumulative Layout Shift, Total Blocking Time).
-👍 Assess Progressive Web App capabilities.
 
 #### Triggering a navigation via user interactions
 
@@ -101,11 +91,8 @@ main();
 
 ### Timespan
 
-Timespan reports analyze an arbitrary period of time, typically containing user interactions, and have similar use cases to the Performance Panel in DevTools.
 
-#### Benefits
 
-✅ Provides range-based metrics such as Total Blocking Time and Cumulative Layout Shift.<br>✅ Analyzes any period of time, including user interactions or single page app transitions.<br>🤔 Does not provide an overall performance score.<br>🤔 Cannot analyze moment-based performance metrics (e.g. Largest Contentful Paint).<br>🤔 Cannot analyze state-of-the-page issues (e.g. no Accessibility category)<br>👍 Measure layout shifts and JavaScript execution time on a series of interactions.<br>👍 Discover performance opportunities to improve the experience for long-lived pages and SPAs.
 #### How to use
 
 <details>
@@ -157,11 +144,7 @@ main();
 
 ### Snapshot
 
-Snapshot reports analyze the page in a particular state, typically after the user has interacted with it, and have similar use cases to the Elements Panel in DevTools.
 
-#### Benefits
-
-✅ Analyzes the page in its current state.<br>🤔 Does not provide an overall performance score or metrics.<br>🤔 Cannot analyze any issues outside the current DOM (e.g. no network, main-thread, or performance analysis).<br>👍 Find accessibility issues in single page applications or complex forms.<br>👍 Evaluate best practices of menus and UI elements hidden behind interaction.
 #### How to use
 
 <details>
