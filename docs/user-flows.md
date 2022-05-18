@@ -14,180 +14,121 @@ In these cases, you want Lighthouse on a _flow_, not just a page load.
 
 Lighthouse can now run in three modes: navigations, timespans, and snapshots. Each mode has its own unique use cases, benefits, and limitations. Later, you'll create a flow by combining these three core report types.
 
-* <img src="https://user-images.githubusercontent.com/39191/168926541-19b26f9e-a424-4bed-a1b4-4c40f4ad94fb.png" height="80" align="middle"> **Navigation mode** analyzes a single page load. Prior to v10, all Lighthouse runs were essentially in this mode.
-* **Timespan mode** analyzes an arbitrary period of time, typically containing user interactions.
-* **Snapshot mode** analyzes the page in a particular state.
+* <img src="https://user-images.githubusercontent.com/39191/168928225-f2157fda-5131-4bd0-9121-b1a0b2f869a7.png" height="80" align="middle"> **Navigation mode** analyzes a single page load. Prior to v10, all Lighthouse runs were essentially in this mode.
+* <img src="https://user-images.githubusercontent.com/39191/168928251-c7025cd5-0086-4db8-ae52-95a5b5675adf.png" height="80" align="middle"> **Timespan mode** analyzes an arbitrary period of time, typically containing user interactions.
+* <img src="https://user-images.githubusercontent.com/39191/168928241-605c2f94-e9c1-48d2-8e4e-3c8a06d1a154.png" height="80" align="middle"> **Snapshot mode** analyzes the page in a particular state.
 
 
-|  |  |  |
-|---|---|---|
-|<td colspan=2>double
-| Navigation | ![navigation](https://user-images.githubusercontent.com/39191/168926541-19b26f9e-a424-4bed-a1b4-4c40f4ad94fb.png) | <small> ✅ Provides an overall performance score and all metrics.<br>✅ Contains the most advice of all report types (both time-based and state-based audits are available).<br>🤔 Cannot analyze form submissions or single page app transitions.<br>🤔 Cannot analyze content that isn't available immediately on page load.<br>👍 Obtain a Lighthouse Performance score.<br>👍 Measure Performance metrics (First Contentful Paint, Largest Contentful Paint, Speed Index, Time to Interactive, Cumulative Layout Shift, Total Blocking Time).<br>👍 Assess Progressive Web App capabilities.</small> |
-| Timespan | ![timespan](https://user-images.githubusercontent.com/39191/168926545-ad4a7fea-9964-4b76-81fd-fe01e3b47139.png) | ✅ Provides range-based metrics such as Total Blocking Time and Cumulative Layout Shift.<br>✅ Analyzes any period of time, including user interactions or single page app transitions.<br>🤔 Does not provide an overall performance score.<br>🤔 Cannot analyze moment-based performance metrics (e.g. Largest Contentful Paint).<br>🤔 Cannot analyze state-of-the-page issues (e.g. no Accessibility category)<br>👍 Measure layout shifts and JavaScript execution time on a series of interactions.<br>👍 Discover performance opportunities to improve the experience for long-lived pages and SPAs. |
-| Snapshot |  ![snapshot](https://user-images.githubusercontent.com/39191/168926542-0a7446f6-b75a-4714-9d80-d484d5380335.png) | ✅ Analyzes the page in its current state.<br>🤔 Does not provide an overall performance score or metrics.<br>🤔 Cannot analyze any issues outside the current DOM (e.g. no network, main-thread, or performance analysis).<br>👍 Find accessibility issues in single page applications or complex forms.<br>👍 Evaluate best practices of menus and UI elements hidden behind interaction. |
-
-
+|  |  |
+|---|---|
+| Navigation | <small> *Benefits* <br> ✅ Provides an overall performance score and all metrics.<br>✅ Contains the most advice of all report types (both time-based and state-based audits are available).<br> *Limitations* <br> 🤔 Cannot analyze form submissions or single page app transitions.<br>🤔 Cannot analyze content that isn't available immediately on page load.<br> *Use Cases* <br> 👍 Obtain a Lighthouse Performance score.<br>👍 Measure Performance metrics (First Contentful Paint, Largest Contentful Paint, Speed Index, Time to Interactive, Cumulative Layout Shift, Total Blocking Time).<br>👍 Assess Progressive Web App capabilities.</small> |
+| Timespan | <small> *Benefits* <br> ✅ Provides range-based metrics such as Total Blocking Time and Cumulative Layout Shift.<br>✅ Analyzes any period of time, including user interactions or single page app transitions.<br> *Limitations* <br> 🤔 Does not provide an overall performance score.<br>🤔 Cannot analyze moment-based performance metrics (e.g. Largest Contentful Paint).<br>🤔 Cannot analyze state-of-the-page issues (e.g. no Accessibility category)<br> *Use Cases* <br> 👍 Measure layout shifts and JavaScript execution time on a series of interactions.<br>👍 Discover performance opportunities to improve the experience for long-lived pages and SPAs. |
+| Snapshot | <small> *Benefits* <br>  ✅ Analyzes the page in its current state.<br> *Limitations* <br> 🤔 Does not provide an overall performance score or metrics.<br>🤔 Cannot analyze any issues outside the current DOM (e.g. no network, main-thread, or performance analysis).<br> *Use Cases* <br> 👍 Find accessibility issues in single page applications or complex forms.<br>👍 Evaluate best practices of menus and UI elements hidden behind interaction. |
 
 
 
-### Navigation
 
 
+### Navigation mode
 
-#### Triggering a navigation via user interactions
+In DevTools, navigation is easy: ensure it's the selected mode and then click _Analyze page load_.
 
-Instead of providing a URL to navigate to, you can provide a callback function. This is useful when you want to audit a navigation where the destination is unknown before navigating.
+![navdt](https://user-images.githubusercontent.com/39191/168929174-11311144-ce9b-4124-9a52-0423a073b9fe.png)
 
-> Aside: Lighthouse typically clears out any active Service Worker and Cache Storage for the origin under test. However, in this case, as it doesn't know the URL being analyzed, Lighthouse cannot clear this storage. This generally reflects the real user experience, but if you still wish to clear the Service Workers and Cache Storage you must do it manually.
+> Note: DevTools only generates a report for a standalone navigation, it cannot be combined with other steps to create a multi-step user flow report.
 
-This callback function _must_ perform an action that will trigger a navigation. Any interactions completed before the callback promise resolves will be captured by the navigation.
-
-#### How to Use
-
-<details>
-<summary>
-DevTools
-</summary>
-
-1. Go to the page you want to test
-2. Select "Navigation (Default)" as your mode
-3. Click "Analyze page load"
-
-> Note: DevTools only generates a report for a standalone navigation, it cannot be combined with other steps in a user flow report.
-
-![Lighthouse DevTools panel in navigation mode](https://user-images.githubusercontent.com/6752989/168673207-1e901e72-3461-4bae-a581-e80963beea54.png)
-</details>
-
-<details>
-<summary>Node API</summary>
+#### Navigations in the Node.js API
 
 ```js
 import {writeFileSync} from 'fs';
 import puppeteer from 'puppeteer';
-import api from 'lighthouse/lighthouse-core/fraggle-rock/api.js';
+import lighthouse from 'lighthouse/lighthouse-core/fraggle-rock/api.js';
 
-async function main() {
+(async function() {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
-  const flow = await api.startFlow(page);
+  const flow = await lighthouse.startFlow(page);
 
   // Navigate with a URL
   await flow.navigate('https://example.com');
 
-  // Navigate with a callback function
+  // Interaction-initiated navigation via a callback function
   await flow.navigate(async () => {
     await page.click('a.link');
   });
 
   await browser.close();
-
   writeFileSync('report.html', await flow.generateReport());
-}
-
-main();
+})();
 ```
-</details>
-<br>
+
+##### Triggering a navigation via user interactions
+
+Instead of providing a URL to navigate to, you can provide a callback function, as seen above. This is useful when you want to audit a navigation that's initiated by a scenario like a button click or form submission.
+
+> Aside: Lighthouse typically clears out any active Service Worker and Cache Storage for the origin under test. However, in this case, as it doesn't know the URL being analyzed, Lighthouse cannot clear this storage. This generally reflects the real user experience, but if you still wish to clear the Service Workers and Cache Storage you must do it manually.
+
+This callback function _must_ perform an action that will trigger a navigation. Any interactions completed before the callback promise resolves will be captured by the navigation.
+
+
 
 ### Timespan
 
+In DevTools, select "Timespan" as the mode and click _Start timespan_. Record whatever timerange or interactions is desired and then click _End timespan_.
 
+![timespandt](https://user-images.githubusercontent.com/39191/168929168-ac45d198-f609-4acb-86a7-51775578c8e0.png)
 
-#### How to use
-
-<details>
-<summary>
-DevTools
-</summary>
-
-1. Go to the page you want to test
-2. Select "Timespan" as your mode
-3. Click "Start timespan"
-4. Interact with the page
-5. Click "End timespan"
-
-> Note: DevTools only generates a report for a standalone timespan, it cannot be combined with other steps in a user flow report.
-
-![Lighthouse DevTools panel in timespan mode](https://user-images.githubusercontent.com/6752989/168679184-b7eff86a-a141-414d-b76a-4da78a165aa8.png)
-</details>
-
-<details>
-<summary>Node API</summary>
+#### Timespans in the Node.js API
 
 ```js
 import {writeFileSync} from 'fs';
 import puppeteer from 'puppeteer';
-import api from 'lighthouse/lighthouse-core/fraggle-rock/api.js';
+import lighthouse from 'lighthouse/lighthouse-core/fraggle-rock/api.js';
 
-async function main() {
+(async function() {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
-  await page.goto('https://example.com');
-  const flow = await api.startFlow(page);
+  await page.goto('https://secret.login');
+  const flow = await lighthouse.startFlow(page);
 
   await flow.beginTimespan();
-  await page.type('#username', 'lighthouse');
   await page.type('#password', 'L1ghth0useR0cks!');
   await page.click('#login');
   await page.waitForSelector('#dashboard');
   await flow.endTimespan();
 
   await browser.close();
-
   writeFileSync('report.html', await flow.generateReport());
-}
-
-main();
+})();
 ```
-</details>
-<br>
 
 ### Snapshot
 
+In DevTools, select "Snapshot" as the mode. Set up the page in the state you want to evaluate. Then, click _Analyze page state_.
 
-#### How to use
+![snapshotdt](https://user-images.githubusercontent.com/39191/168929172-92a70108-a053-4dda-b719-2900b9d3d956.png)
 
-<details>
-<summary>
-DevTools
-</summary>
+#### Snapshots in the Node.js API
 
-1. Go to the page you want to test
-2. Interact with the page so it's in a state you want to test
-3. Select "Snapshot" as your mode
-4. Click "Analyze page state".
-
-> Note: DevTools only generates a report for a standalone snapshot, it cannot be combined with other steps in a user flow report.
-
-<img width="1203" alt="Screen Shot 2022-05-16 at 1 30 08 PM" src="https://user-images.githubusercontent.com/6752989/168677313-8be0591a-8e17-488c-b602-b47e487a75a3.png">
-</details>
-
-<details>
-<summary>Node API</summary>
 
 ```js
 import {writeFileSync} from 'fs';
 import puppeteer from 'puppeteer';
-import api from 'lighthouse/lighthouse-core/fraggle-rock/api.js';
+import lighthouse from 'lighthouse/lighthouse-core/fraggle-rock/api.js';
 
-async function main() {
+(async function() {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   await page.goto('https://example.com');
-  const flow = await api.startFlow(page);
+  const flow = await lighthouse.startFlow(page);
 
   await page.click('#expand-sidebar');
   await flow.snapshot();
 
   await browser.close();
-
   writeFileSync('report.html', await flow.generateReport());
-}
-
-main();
+})();
 ```
-</details>
-<br>
 
 ## Creating a Flow
 
@@ -225,7 +166,7 @@ The below example codifies a user flow for an ecommerce site where the user navi
 import {writeFileSync} from 'fs';
 import puppeteer from 'puppeteer';
 import * as pptrTestingLibrary from 'pptr-testing-library';
-import api from 'lighthouse/lighthouse-core/fraggle-rock/api.js';
+import lighthouse from 'lighthouse/lighthouse-core/fraggle-rock/api.js';
 
 const {getDocument, queries} = pptrTestingLibrary;
 
@@ -243,7 +184,7 @@ async function main() {
   // Setup the browser and Lighthouse.
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
-  const flow = await api.startFlow(page);
+  const flow = await lighthouse.startFlow(page);
 
   // Phase 1 - Navigate to our landing page.
   await flow.navigate('https://www.bestbuy.com');
