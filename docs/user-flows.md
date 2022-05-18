@@ -16,7 +16,7 @@ Lighthouse can now run in three modes: navigations, timespans, and snapshots. Ea
 
 * <img src="https://user-images.githubusercontent.com/39191/168928225-f2157fda-5131-4bd0-9121-b1a0b2f869a7.png" height="80" align="middle"> **Navigation mode** analyzes a single page load. Prior to v10, all Lighthouse runs were essentially in this mode.
 * <img src="https://user-images.githubusercontent.com/39191/168928251-c7025cd5-0086-4db8-ae52-95a5b5675adf.png" height="80" align="middle"> **Timespan mode** analyzes an arbitrary period of time, typically containing user interactions.
-* <img src="https://user-images.githubusercontent.com/39191/168928241-605c2f94-e9c1-48d2-8e4e-3c8a06d1a154.png" height="80" align="middle"> **Snapshot mode** analyzes the page in a particular state.
+* <img src="https://user-images.githubusercontent.com/39191/168931653-b45e0b6b-c5bd-4d8d-85b6-fee8425186a0.png" height="80" align="middle"> **Snapshot mode** analyzes the page in a particular state.
 
 
 |  |  |
@@ -35,7 +35,7 @@ In DevTools, navigation is easy: ensure it's the selected mode and then click _A
 
 ![navdt](https://user-images.githubusercontent.com/39191/168929174-11311144-ce9b-4124-9a52-0423a073b9fe.png)
 
-> Note: DevTools only generates a report for a standalone navigation, it cannot be combined with other steps to create a multi-step user flow report.
+> Note: DevTools only generates a report for a standalone navigation. To combine it with other steps for a multi-step user flow report, [use the Node API](#creating-a-flow).
 
 #### Navigations in the Node.js API
 
@@ -132,33 +132,18 @@ import lighthouse from 'lighthouse/lighthouse-core/fraggle-rock/api.js';
 
 ## Creating a Flow
 
-So far we've seen individual Lighthouse modes in action. The true power of flows comes from combining these building blocks into a comprehensive flow to capture the user's entire experience.
-
-### Selecting Boundaries
-
-When mapping a user flow onto the Lighthouse modes, strive for each report to have a narrow focus. This will make debugging much easier when you have issues to fix! Use the following guide when crafting your timespan and snapshot checkpoints.
-
-![image](https://user-images.githubusercontent.com/2301202/135167873-4a867444-55c3-4bfb-814b-0a536bf4ddef.png)
+<img src="https://user-images.githubusercontent.com/39191/168931109-5ae80620-7464-4d98-a834-71169a5b6a61.png" height=300>
 
 
-1. `.navigate` to the URL of interest, proceed to step 2.
-2. Are you interacting with the page?
-    1. Yes - Proceed to step 3.
-    2. No - End your flow.
-3. Are you clicking a link?
-    1. Yes - Proceed to step 1.
-    2. No - Proceed to step 4.
-4. `.startTimespan`, proceed to step 5.
-5. Has the page or URL changed significantly during the timespan?
-    1. Yes - Proceed to step 6.
-    2. No - Either wait for a significant change or end your flow.
-6. `.stopTimespan`, proceed to step 7.
-7. `.snapshot`, proceed to step 2.
+So far we've seen individual Lighthouse modes in action. The true power of flows comes from combining these building blocks into a comprehensive flow to capture the user's entire experience. Analyzing a multi-step user flow is currently only available [using the Lighthouse Node API along with Puppeteer](https://web.dev/lighthouse-user-flows/).
 
+When mapping a user flow onto the Lighthouse modes, strive for each report to have a narrow focus. This will make debugging much easier when you have issues to fix!
+
+--------
 
 The below example codifies a user flow for an ecommerce site where the user navigates to the homepage, searches for a product, and clicks on the detail link.
 
-![Lighthouse User Flows Diagram](https://user-images.githubusercontent.com/6752989/168678568-69aaa82f-0459-4c2a-8f46-467d7f06d237.png)
+![Lighthouse User Flows Diagram](https://user-images.githubusercontent.com/39191/168932574-944757d8-d110-4777-a01f-0ec27d65719a.png)
 
 ### Complete user Flow Code
 
@@ -180,13 +165,13 @@ async function search(page) {
   ]);
 }
 
-async function main() {
+(async function() {
   // Setup the browser and Lighthouse.
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   const flow = await lighthouse.startFlow(page);
 
-  // Phase 1 - Navigate to our landing page.
+  // Phase 1 - Navigate to the landing page.
   await flow.navigate('https://www.bestbuy.com');
 
   // Phase 2 - Interact with the page and submit the search form.
@@ -211,16 +196,19 @@ async function main() {
 
   // Cleanup.
   await browser.close();
-}
-
-main();
+})();
 ```
+
+As this flow contains multiple modes within, the flow report summarizes everything and allows you to investigate each aspect in more detail.
+
+![Full flow report screenshot](https://user-images.githubusercontent.com/39191/168932301-cfdbe812-db96-4c6d-b43b-fe5c31f9d192.png)
+
 
 ## Tips and Tricks
 
 - Keep timespan recordings _short_ and focused on a single interaction sequence or page transition.
 - Use snapshot recordings when a substantial portion of the page content has changed.
-- Always wait for transitions and interactions to finish before ending a timespan. `page.waitForSelector`/`page.waitForFunction`/`page.waitForResponse`/`page.waitForTimeout` are your friends here.
+- Always wait for transitions and interactions to finish before ending a timespan. The puppeteer APIs `page.waitForSelector`/`page.waitForFunction`/`page.waitForResponse`/`page.waitForTimeout` are your friends here.
 
 ## Related Reading
 
