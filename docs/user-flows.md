@@ -18,10 +18,12 @@ Lighthouse can now run in three modes: navigations, timespans, and snapshots. Ea
 * **Timespan mode** analyzes an arbitrary period of time, typically containing user interactions.
 * **Snapshot mode** analyzes the page in a particular state.
 
+| | |
 |:---:|---|
 | Navigation <br> <img src="https://user-images.githubusercontent.com/39191/168928225-f2157fda-5131-4bd0-9121-b1a0b2f869a7.png" height="96" width="141">  | **Benefits** <br>  ✅ Provides an overall performance score and all metrics.<br>✅ Contains the most advice of all report types.<br><br> **Limitations** <br>  🤔 Cannot analyze form submissions or single page app transitions.<br>🤔 Cannot analyze content that isn't available immediately on page load.<br><br> **Use Cases** <br>  👍 Obtain a Lighthouse Performance score.<br>👍 Measure all performance metrics.<br>👍 Assess Progressive Web App capabilities. |
 | Timespan <br> <img src="https://user-images.githubusercontent.com/39191/168928251-c7025cd5-0086-4db8-ae52-95a5b5675adf.png" height="96" width="141">  | **Benefits** <br>  ✅ Provides timerange-based metrics such as TBT, CLS and INP.<br>✅ Analyzes any period of time, including user interactions or single page app transitions.<br><br> **Limitations** <br>  🤔 Does not provide an overall performance score.<br>🤔 Cannot analyze moment-based performance metrics (e.g. Largest Contentful Paint).<br>🤔 Cannot analyze state-of-the-page issues (e.g. no Accessibility category)<br><br> **Use Cases** <br>  👍 Measure layout shifts and JavaScript execution time on a series of interactions.<br>👍 Discover performance opportunities to improve the experience for long-lived pages and SPAs. |
 | Snapshot <br> <img src="https://user-images.githubusercontent.com/39191/168931653-b45e0b6b-c5bd-4d8d-85b6-fee8425186a0.png" height="96" width="141">  | **Benefits** <br>   ✅ Analyzes the page in its current state.<br><br> **Limitations** <br>  🤔 Does not provide an overall performance score or metrics.<br>🤔 Cannot analyze any issues outside the current DOM (e.g. no network, main-thread, or performance analysis).<br><br> **Use Cases** <br>  👍 Find accessibility issues in single page applications or complex forms.<br>👍 Evaluate best practices of menus and UI elements hidden behind interaction. |
+
 
 ### Navigation mode
 
