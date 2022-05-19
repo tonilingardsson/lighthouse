@@ -142,7 +142,7 @@ When mapping a user flow onto the Lighthouse modes, strive for each report to ha
 
 The below example codifies a user flow for an ecommerce site where the user navigates to the homepage, searches for a product, and clicks on the detail link.
 
-![Lighthouse User Flows Diagram](https://user-images.githubusercontent.com/39191/168932574-944757d8-d110-4777-a01f-0ec27d65719a.png)
+<img alt="Lighthouse User Flows Diagram" src="https://user-images.githubusercontent.com/39191/168932574-944757d8-d110-4777-a01f-0ec27d65719a.png" height="550">
 
 ### Complete user Flow Code
 
