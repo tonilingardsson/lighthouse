@@ -5,7 +5,7 @@ Historically, Lighthouse has analyzed the cold pageload of a page. Starting in 2
 #### You might be interested in flows if…
 
 * … you want to run Lighthouse on your whole webapp, not just the landing page.
-* … you want to know if the checkout process is accessible.
+* … you want to know if all parts of the web experience are accessible (e.g. a checkout process).
 * … you want to know the Cumulative Layout Shift of my SPA page transition
 
 In these cases, you want Lighthouse on a _flow_, not just a page load.
