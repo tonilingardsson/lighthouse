@@ -199,7 +199,7 @@ async function search(page) {
 })();
 ```
 
-As this flow contains multiple modes within, the flow report summarizes everything and allows you to investigate each aspect in more detail.
+As this flow has multiple steps, the flow report summarizes everything and allows you to investigate each aspect in more detail.
 
 ![Full flow report screenshot](https://user-images.githubusercontent.com/39191/168932301-cfdbe812-db96-4c6d-b43b-fe5c31f9d192.png)
 
