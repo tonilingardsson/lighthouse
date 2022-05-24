@@ -35,7 +35,7 @@ import {LH_ROOT} from '../../../root.js';
 // all necessary tests are isolated:
 //    yarn mocha --no-parallel lighthouse-core/test
 const testsToIsolate = new Set([
-  // grep -lRE '^timers\.useFakeTimers' lighthouse-core/test
+  // grep -lRE '^timers\.useFakeTimers' --include='*-test.*' --exclude-dir=node_modules
   'lighthouse-core/test/fraggle-rock/gather/session-test.js',
   'lighthouse-core/test/gather/driver-test.js',
   'lighthouse-core/test/gather/driver/execution-context-test.js',
@@ -51,7 +51,7 @@ const testsToIsolate = new Set([
   'lighthouse-core/test/gather/gatherers/trace-elements-test.js',
   'lighthouse-core/test/gather/gatherers/trace-test.js',
 
-  // grep -lRE '^td\.replace' lighthouse-core/test
+  // grep -lRE '^td\.replace' --include='*-test.*' --exclude-dir=node_modules
   'lighthouse-core/test/fraggle-rock/gather/navigation-runner-test.js',
   'lighthouse-core/test/fraggle-rock/gather/snapshot-runner-test.js',
   'lighthouse-core/test/fraggle-rock/gather/timespan-runner-test.js',
@@ -62,7 +62,7 @@ const testsToIsolate = new Set([
   'lighthouse-core/test/lib/sentry-test.js',
   'lighthouse-core/test/runner-test.js',
 
-  // grep -lRE 'mockDriverSubmodules|mockRunnerModule|mockDriverModule|mockDriverSubmodules|makeMocksForGatherRunner' lighthouse-core/test
+  // grep -lRE --include='-test.js' 'mockDriverSubmodules|mockRunnerModule|mockDriverModule|mockDriverSubmodules|makeMocksForGatherRunner' --include='*-test.*' --exclude-dir=node_modules
   'lighthouse-core/test/fraggle-rock/gather/navigation-runner-test.js',
   'lighthouse-core/test/fraggle-rock/gather/snapshot-runner-test.js',
   'lighthouse-core/test/fraggle-rock/gather/timespan-runner-test.js',
@@ -78,6 +78,7 @@ const testsToIsolate = new Set([
   'lighthouse-core/test/config/config-test.js',
   'lighthouse-core/test/fraggle-rock/config/config-test.js',
   'lighthouse-core/test/lib/emulation-test.js',
+  'report/test/clients/bundle-test.js',
 ]);
 
 const y = yargs(yargsHelpers.hideBin(process.argv));

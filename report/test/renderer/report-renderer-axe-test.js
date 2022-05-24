@@ -78,10 +78,8 @@ describe('ReportRendererAxe', () => {
         };
       });
       expect(axeSummary).toMatchSnapshot();
-    },
+    }).timeout(20_000);
     // This test takes 10s on fast hardware, but can take longer in CI.
     // https://github.com/dequelabs/axe-core/tree/b573b1c1/doc/examples/jest_react#timeout-issues
-    /* timeout= */ 20_000
-    );
   });
 });

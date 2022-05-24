@@ -31,6 +31,7 @@ describe('ElementScreenshotRenderer', () => {
 
     const {document} = new jsdom.JSDOM().window;
     dom = new DOM(document);
+    Util.resetUniqueSuffix();
   });
 
   afterAll(() => {

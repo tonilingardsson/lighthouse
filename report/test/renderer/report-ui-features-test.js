@@ -7,7 +7,7 @@
 import {strict as assert} from 'assert';
 
 import jsdom from 'jsdom';
-import {jest} from '@jest/globals';
+import jestMock from 'jest-mock';
 
 import reportAssets from '../../generator/report-assets.js';
 import {Util} from '../../renderer/util.js';
@@ -41,7 +41,7 @@ describe('ReportUIFeatures', () => {
   }
 
   beforeAll(() => {
-    global.console.warn = jest.fn();
+    global.console.warn = jestMock.fn();
 
     // Stub out matchMedia for Node.
     global.matchMedia = function() {
@@ -283,7 +283,7 @@ describe('ReportUIFeatures', () => {
       const getSaveEl = () => dom.find('a[data-action="save-html"]', container);
       expect(getSaveEl().classList.contains('lh-hidden')).toBeTruthy();
 
-      const getHtmlMock = jest.fn();
+      const getHtmlMock = jestMock.fn();
       container = render(sampleResults, {
         getStandaloneReportHTML: getHtmlMock,
       });
