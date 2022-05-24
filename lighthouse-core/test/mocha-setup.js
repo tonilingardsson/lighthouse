@@ -7,22 +7,36 @@
 /**
  * @fileoverview
  *    - sets global.expect
- *    - configures the mocha test runner to use jest-snapshot
+ *    - configures mocha to use jest-snapshot
  *    - symlinks `fixtures/config-plugins/lighthouse-plugin-simple` to a place where the default
  *      config module resolution will find it
  */
 
 /* eslint-disable import/order */
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
 
-const expect = require('expect');
-const td = require('testdouble');
-const {SnapshotState, toMatchSnapshot, toMatchInlineSnapshot} = require('jest-snapshot');
-const {LH_ROOT} = require('../../root.js');
+import {before, after} from 'mocha';
+import path from 'path';
+import expect from 'expect';
+import * as td from 'testdouble';
+import jestSnapshot from 'jest-snapshot';
+// import * as preact from 'preact';
 
-require('./jest-setup/setup.js');
+import {timers} from './fake-timers.js';
+import {LH_ROOT} from '../../root.js';
+import './jest-setup/setup.js';
+
+// global.React = preact;
+// global.h = preact.h;
+
+import jsdom from 'mocha-jsdom';
+
+const {SnapshotState, toMatchSnapshot, toMatchInlineSnapshot} = jestSnapshot;
+
+// Use consistent TZ across testing environments.
+// Timezone is used to construct date strings.
+process.env.TZ = 'UTC';
 
 /** @type {Map<string, SnapshotState['prototype']>} */
 const snapshotStatesByTestFile = new Map();
@@ -106,10 +120,12 @@ expect.extend({
 // @ts-expect-error
 global.expect = expect;
 
-// Force marky to not use Node's performance, which will get messed up by fake timers.
+// Force marky to not use Node's performance, which is messed up by fake timers.
 const performance = global.performance;
+// @ts-expect-error
 global.performance = undefined;
-require('marky');
+// @ts-expect-error: no types
+await import('marky');
 global.performance = performance;
 
 /**
@@ -130,7 +146,6 @@ const makeFn = (mochaFn) => (fn, timeout) => {
   });
 };
 
-const {before, after} = require('mocha');
 global.beforeAll = makeFn(before);
 global.afterAll = makeFn(after);
 
@@ -142,7 +157,8 @@ const testPlugins = [
 
 /** @type {Mocha.Test} */
 let mochaCurrentTest;
-module.exports = {
+
+export default {
   mochaHooks: {
     /** @this {Mocha.Context} */
     beforeEach() {
@@ -151,9 +167,11 @@ module.exports = {
       // Needed so `expect` extension method can access information about the current test.
       mochaCurrentTest = this.currentTest;
     },
+    async beforeAll() {
+      // global.React = await import('preact');
+      // jsdom();
+    },
     async afterAll() {
-      // TODO(esmodules)
-      const {timers} = await import('./fake-timers.js');
       timers.dispose();
       td.reset();
 

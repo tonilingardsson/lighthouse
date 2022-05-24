@@ -131,6 +131,8 @@ const defaultTestMatches = [
   'lighthouse-core/**/*-test.js',
   'lighthouse-cli/**/*-test.js',
   'report/**/*-test.js',
+  'flow-report/**/*-test.ts',
+  'flow-report/**/*-test.tsx',
   'lighthouse-core/test/fraggle-rock/**/*-test-pptr.js',
   'treemap/**/*-test.js',
   'viewer/**/*-test.js',
@@ -173,8 +175,12 @@ for (const test of filteredTests) {
 }
 
 const baseArgs = [
-  '--loader=testdouble',
-  '--require=lighthouse-core/test/mocha-setup.cjs',
+  // https://github.com/nodejs/modules/issues/513
+  // '--loader=@cspotcode/multiloader/compose?ts-node/esm,testdouble',
+  '--loader=@esbuild-kit/esm-loader',
+  // '--loader=ts-node/esm',
+  // '--loader=testdouble',
+  '--require=lighthouse-core/test/mocha-setup.js',
   '--timeout=20000',
   '--fail-zero',
   ...mochaPassThruArgs,
@@ -202,7 +208,9 @@ function exit(code) {
  */
 function runMochaCLI(tests) {
   const file = 'node_modules/.bin/mocha';
+  // const file = 'node_modules/.bin/ts-node';
   const args = [
+    // 'node_modules/.bin/mocha',
     ...baseArgs,
     ...tests,
   ];
@@ -214,6 +222,7 @@ function runMochaCLI(tests) {
       env: {
         ...process.env,
         SNAPSHOT_UPDATE: argv.update ? '1' : undefined,
+        TS_NODE_TRANSPILE_ONLY: '1',
       },
       stdio: 'inherit',
     });

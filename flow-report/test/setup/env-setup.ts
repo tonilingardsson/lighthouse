@@ -4,7 +4,7 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-import {jest} from '@jest/globals';
+import jestMock from 'jest-mock';
 import {JSDOM} from 'jsdom';
 
 /**
@@ -25,8 +25,8 @@ beforeEach(() => {
   global.HTMLInputElement = window.HTMLInputElement;
 
   // Functions not implemented in JSDOM.
-  window.Element.prototype.scrollIntoView = jest.fn();
-  global.self.matchMedia = jest.fn<any, any>(() => ({
-    addListener: jest.fn(),
+  window.Element.prototype.scrollIntoView = jestMock.fn();
+  global.self.matchMedia = jestMock.fn<any, any>(() => ({
+    addListener: jestMock.fn(),
   }));
 });
