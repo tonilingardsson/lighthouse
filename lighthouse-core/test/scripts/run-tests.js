@@ -75,6 +75,7 @@ const testsToIsolate = new Set([
   'lighthouse-core/test/runner-test.js',
 
   // ?
+  'clients/test/lightrider/lightrider-entry-test.js', // Runner overrides.
   'lighthouse-core/test/config/config-test.js',
   'lighthouse-core/test/fraggle-rock/config/config-test.js',
   'lighthouse-core/test/lib/emulation-test.js',
