@@ -52,6 +52,7 @@ const testsToIsolate = new Set([
   'lighthouse-core/test/gather/gatherers/trace-test.js',
 
   // grep -lRE '^td\.replace' --include='*-test.*' --exclude-dir=node_modules
+  'flow-report/test/topbar-test.tsx',
   'lighthouse-core/test/fraggle-rock/gather/navigation-runner-test.js',
   'lighthouse-core/test/fraggle-rock/gather/snapshot-runner-test.js',
   'lighthouse-core/test/fraggle-rock/gather/timespan-runner-test.js',
@@ -76,6 +77,7 @@ const testsToIsolate = new Set([
 
   // ?
   'clients/test/lightrider/lightrider-entry-test.js', // Runner overrides.
+  'flow-report/test/flow-report-pptr-test.ts',
   'lighthouse-core/test/config/config-test.js',
   'lighthouse-core/test/fraggle-rock/config/config-test.js',
   'lighthouse-core/test/lib/emulation-test.js',
@@ -181,6 +183,7 @@ const baseArgs = [
   // '--loader=ts-node/esm',
   // '--loader=testdouble',
   '--require=lighthouse-core/test/mocha-setup.js',
+  '--require=flow-report/test/setup/env-setup.ts',
   '--timeout=20000',
   '--fail-zero',
   ...mochaPassThruArgs,

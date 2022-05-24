@@ -1496,10 +1496,10 @@
   resolved "https://registry.yarnpkg.com/@testing-library/preact-hooks/-/preact-hooks-1.1.0.tgz#f4e197ec77b295ce6c122c560c46b5b03bc4f015"
   integrity sha512-+JIor+NsOHkK3oIrwMDGKGHXTN0JJi462dBJlj4FNbGaDPTlctE6eu2ranWQirh7/FJMkWfzQCP+tk7jmY8ZrQ==
 
-"@testing-library/preact@^3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@testing-library/preact/-/preact-3.0.1.tgz#c4179f599eca688df995f1f0818f3b4a1853cad4"
-  integrity sha512-IRKwoZdXmhigFH1M2WyNfVM75nKW/QQ70GoFJyGKvmdQJJXBTppg94PQVVVec4x4b/apvDnl2lWZqpCxkRRPyg==
+"@testing-library/preact@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@testing-library/preact/-/preact-3.1.0.tgz#11b1161b28ebe8548a0e574e25fe1545feef24e3"
+  integrity sha512-SKRrCn8JErUq7FR5wiiTYP0POjW6sNCzme5QKDcZt68XpLqDUIIs+nxZYsuEqFwpYo4GNWqAvJWU5QjERvrz4Q==
   dependencies:
     "@testing-library/dom" "^8.11.1"
 

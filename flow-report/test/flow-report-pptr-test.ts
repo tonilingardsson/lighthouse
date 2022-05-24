@@ -22,7 +22,7 @@ describe('Lighthouse Flow Report', () => {
     });
     page = await browser.newPage();
     page.on('pageerror', pageError => pageErrors.push(pageError));
-  });
+  }, 35_000);
 
   afterAll(async () => {
     if (pageErrors.length > 0) console.error(pageErrors);

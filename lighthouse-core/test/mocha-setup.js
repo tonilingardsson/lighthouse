@@ -30,7 +30,11 @@ import './jest-setup/setup.js';
 // global.React = preact;
 // global.h = preact.h;
 
-import jsdom from 'mocha-jsdom';
+// https://github.com/testing-library/preact-testing-library/issues/36#issuecomment-1136484478
+fs.writeFileSync(`${LH_ROOT}/node_modules/@testing-library/preact/dist/esm/package.json`,
+  '{"type": "module"}');
+fs.writeFileSync(`${LH_ROOT}/node_modules/@testing-library/preact-hooks/src/package.json`,
+  '{"type": "module"}');
 
 const {SnapshotState, toMatchSnapshot, toMatchInlineSnapshot} = jestSnapshot;
 

@@ -7,26 +7,26 @@
 import jestMock from 'jest-mock';
 import {JSDOM} from 'jsdom';
 
-/**
- * The jest environment "jsdom" does not work when preact is combined with the report renderer.
- * This sets up our own environment with JSDOM globals.
- */
-beforeEach(() => {
-  const {window} = new JSDOM(undefined, {
-    url: 'file:///Users/example/report.html/',
-  });
-  global.window = window as any;
-  global.document = window.document;
-  global.location = window.location;
-  global.self = global.window;
+export default {
+  mochaHooks: {
+    beforeEach() {
+      const {window} = new JSDOM(undefined, {
+        url: 'file:///Users/example/report.html/',
+      });
+      global.window = window as any;
+      global.document = window.document;
+      global.location = window.location;
+      global.self = global.window;
 
-  // Use JSDOM types as necessary.
-  global.Blob = window.Blob;
-  global.HTMLInputElement = window.HTMLInputElement;
+      // Use JSDOM types as necessary.
+      global.Blob = window.Blob;
+      global.HTMLInputElement = window.HTMLInputElement;
 
-  // Functions not implemented in JSDOM.
-  window.Element.prototype.scrollIntoView = jestMock.fn();
-  global.self.matchMedia = jestMock.fn<any, any>(() => ({
-    addListener: jestMock.fn(),
-  }));
-});
+      // Functions not implemented in JSDOM.
+      window.Element.prototype.scrollIntoView = jestMock.fn();
+      global.self.matchMedia = jestMock.fn<any, any>(() => ({
+        addListener: jestMock.fn(),
+      }));
+    },
+  },
+};

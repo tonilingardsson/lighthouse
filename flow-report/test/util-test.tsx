@@ -6,12 +6,12 @@
 
 import jestMock from 'jest-mock';
 import {render} from '@testing-library/preact';
-import {renderHook} from '@testing-library/preact-hooks';
-import {FunctionComponent} from 'preact';
+import {renderHook} from '@testing-library/preact-hooks/src/index';
+import {h, FunctionComponent} from 'preact';
 import {act} from 'preact/test-utils';
 
-import {FlowResultContext, useExternalRenderer, useHashState} from '../src/util.js';
-import {flowResult} from './sample-flow.js';
+import {FlowResultContext, useExternalRenderer, useHashState} from '../src/util';
+import {flowResult} from './sample-flow';
 
 let wrapper: FunctionComponent;
 
