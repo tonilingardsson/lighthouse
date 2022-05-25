@@ -20,10 +20,12 @@ function timerIdToRef(id) {
     },
   };
 }
+
 /**
  * @param {{id: string}} timer
  */
 const timerRefToId = timer => (timer && timer.id) || undefined;
+
 const timers = new ModernFakeTimers({
   global,
   config: {

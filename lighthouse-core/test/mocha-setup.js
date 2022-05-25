@@ -31,6 +31,9 @@ const {SnapshotState, toMatchSnapshot, toMatchInlineSnapshot} = jestSnapshot;
 // Timezone is used to construct date strings.
 process.env.TZ = 'UTC';
 
+// Expected to be set by lh-env.js
+process.env.NODE_TEST = 'test';
+
 /** @type {Map<string, SnapshotState['prototype']>} */
 const snapshotStatesByTestFile = new Map();
 let snapshotTestFailed = false;
@@ -82,11 +85,11 @@ expect.extend({
 
     const title = makeTestTitle(test);
     const snapshotState = getSnapshotState(test.file);
-    /** @type {import('jest-snapshot/build/types').Context} */
-    // @ts-expect-error - this is enough for snapshots to work.
     const context = {snapshotState, currentTestName: title};
+    // @ts-expect-error - this is enough for snapshots to work.
     const matcher = toMatchSnapshot.bind(context);
     const result = matcher(actual);
+    // @ts-expect-error - not sure why these types are so wrong
     if (!result.pass) snapshotTestFailed = true;
     return result;
   },
@@ -100,11 +103,12 @@ expect.extend({
 
     const title = makeTestTitle(test);
     const snapshotState = getSnapshotState(test.file);
-    /** @type {import('jest-snapshot/build/types').Context} */
-    // @ts-expect-error - this is enough for snapshots to work.
     const context = {snapshotState, currentTestName: title};
+    // @ts-expect-error - this is enough for snapshots to work.
     const matcher = toMatchInlineSnapshot.bind(context);
+    // @ts-expect-error - not sure why these types are so wrong
     const result = matcher(actual, expected);
+    // @ts-expect-error - not sure why these types are so wrong
     if (!result.pass) snapshotTestFailed = true;
     return result;
   },
