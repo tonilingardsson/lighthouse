@@ -8,6 +8,9 @@ module.exports = {
   env: {
     mocha: true,
   },
+  globals: {
+    expect: true,
+  },
   rules: {
     // TODO(esmodules): move to root eslint when all code is ESM
     // or when this is resolved: https://github.com/import-js/eslint-plugin-import/issues/2214
