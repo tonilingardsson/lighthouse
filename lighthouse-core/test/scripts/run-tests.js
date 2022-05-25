@@ -75,6 +75,11 @@ const testsToIsolate = new Set([
   'lighthouse-core/test/gather/gatherers/script-elements-test.js',
   'lighthouse-core/test/runner-test.js',
 
+  // These tend to timeout in puppeteer when run in parallel with other tests.
+  'lighthouse-core/test/fraggle-rock/scenarios/api-test-pptr.js',
+  'lighthouse-core/test/fraggle-rock/scenarios/cross-origin-test-pptr.js',
+  'lighthouse-core/test/fraggle-rock/scenarios/disconnect-test-pptr.js',
+
   // ?
   'clients/test/lightrider/lightrider-entry-test.js', // Runner overrides.
   'flow-report/test/flow-report-pptr-test.ts',
