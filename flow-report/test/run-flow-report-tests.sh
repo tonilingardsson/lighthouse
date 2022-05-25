@@ -6,11 +6,15 @@
 # Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 ##
 
-set -euxo
+set -eux
 
 ARGS=(
-  # util-test.tsx won't finish on its own for some reason, so help it out.
+  --testMatch='{flow-report/**/*-test.ts,flow-report/**/*-test.tsx}'
+  --require=flow-report/test/setup/env-setup.ts
+  # util-test.tsx won't finish on its own because of an open MessagePort, so help it out.
+  # See https://github.com/jsdom/jsdom/issues/2448#issuecomment-802288244
   --exit
+  $*
 )
 
-yarn mocha flow-report/test ${ARGS[*]}
+yarn mocha ${ARGS[*]}

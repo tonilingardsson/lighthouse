@@ -4,6 +4,8 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
+import {MessageChannel} from 'worker_threads';
+
 import jestMock from 'jest-mock';
 import {JSDOM} from 'jsdom';
 
@@ -27,6 +29,9 @@ export default {
       global.self.matchMedia = jestMock.fn<any, any>(() => ({
         addListener: jestMock.fn(),
       }));
+
+      // @ts-expect-error: for @testing-library/preact-hooks
+      global.MessageChannel = MessageChannel;
     },
   },
 };
