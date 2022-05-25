@@ -15,7 +15,7 @@ import pageFunctions from '../../lib/page-functions.js';
 describe('Page Functions', () => {
   const url = 'http://www.example.com';
 
-  beforeAll(async () => {
+  before(async () => {
     const {document, ShadowRoot, Node, HTMLElement} = new jsdom.JSDOM('', {url}).window;
     global.ShadowRoot = ShadowRoot;
     global.Node = Node;
@@ -26,7 +26,7 @@ describe('Page Functions', () => {
     };
   });
 
-  afterAll(() => {
+  after(() => {
     global.ShadowRoot = undefined;
     global.Node = undefined;
     global.window = undefined;

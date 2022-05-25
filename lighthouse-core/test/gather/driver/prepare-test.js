@@ -17,7 +17,7 @@ import constants from '../../../config/constants.js';
 /** @type {import('../../../gather/driver/prepare.js')} */
 let prepare;
 
-beforeAll(async () => {
+before(async () => {
   prepare = (await import('../../../gather/driver/prepare.js'));
 });
 

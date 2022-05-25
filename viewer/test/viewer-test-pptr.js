@@ -55,7 +55,7 @@ describe('Lighthouse Viewer', () => {
       });
   }
 
-  beforeAll(async () => {
+  before(async () => {
     await server.listen(portNumber, 'localhost');
 
     // start puppeteer
@@ -66,7 +66,7 @@ describe('Lighthouse Viewer', () => {
     viewerPage.on('pageerror', pageError => pageErrors.push(pageError));
   });
 
-  afterAll(async function() {
+  after(async function() {
     // Log any page load errors encountered in case before() failed.
     // eslint-disable-next-line no-console
     if (pageErrors.length > 0) console.error(pageErrors);
@@ -78,7 +78,7 @@ describe('Lighthouse Viewer', () => {
   });
 
   describe('Renders the flow report', () => {
-    beforeAll(async () => {
+    before(async () => {
       await viewerPage.goto(viewerUrl, {waitUntil: 'networkidle2', timeout: 30000});
       const fileInput = await viewerPage.$('#hidden-file-input');
       await fileInput.uploadFile(sampleFlowResult);
@@ -103,7 +103,7 @@ describe('Lighthouse Viewer', () => {
   });
 
   describe('Renders the report', () => {
-    beforeAll(async function() {
+    before(async () => {
       await viewerPage.goto(viewerUrl, {waitUntil: 'networkidle2', timeout: 30000});
       const fileInput = await viewerPage.$('#hidden-file-input');
       await fileInput.uploadFile(sampleLhr);
@@ -275,12 +275,12 @@ describe('Lighthouse Viewer', () => {
       }
     }
 
-    beforeAll(async () => {
+    before(async () => {
       await viewerPage.setRequestInterception(true);
       viewerPage.on('request', onRequest);
     });
 
-    afterAll(async () => {
+    after(async () => {
       viewerPage.off('request', onRequest);
       await viewerPage.setRequestInterception(false);
     });

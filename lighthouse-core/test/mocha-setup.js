@@ -16,7 +16,6 @@
 
 import fs from 'fs';
 
-import {before, after} from 'mocha';
 import path from 'path';
 import expect from 'expect';
 import * as td from 'testdouble';
@@ -111,7 +110,6 @@ expect.extend({
   },
 });
 
-// @ts-expect-error
 global.expect = expect;
 
 // Force marky to not use Node's performance, which is messed up by fake timers.
@@ -121,27 +119,6 @@ global.performance = undefined;
 // @ts-expect-error: no types
 await import('marky');
 global.performance = performance;
-
-/**
- * @param {Mocha.HookFunction} mochaFn
- * @return {jest.Lifecycle}
- */
-const makeFn = (mochaFn) => (fn, timeout) => {
-  mochaFn(function() {
-    // eslint-disable-next-line no-invalid-this
-    if (timeout !== undefined) this.timeout(timeout);
-
-    /** @type {jest.DoneCallback} */
-    const cb = () => {};
-    cb.fail = (error) => {
-      throw new Error(typeof error === 'string' ? error : error?.message);
-    };
-    return fn(cb);
-  });
-};
-
-global.beforeAll = makeFn(before);
-global.afterAll = makeFn(after);
 
 const testPlugins = [
   'lighthouse-plugin-no-category',

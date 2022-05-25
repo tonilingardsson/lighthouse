@@ -22,7 +22,7 @@ import {
 /** @type {import('../../../fraggle-rock/gather/timespan-runner.js')['startTimespanGather']} */
 let startTimespanGather;
 
-beforeAll(async () => {
+before(async () => {
   startTimespanGather =
     (await import('../../../fraggle-rock/gather/timespan-runner.js')).startTimespanGather;
 });

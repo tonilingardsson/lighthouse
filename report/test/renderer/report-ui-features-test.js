@@ -40,7 +40,7 @@ describe('ReportUIFeatures', () => {
     return container;
   }
 
-  beforeAll(() => {
+  before(() => {
     global.console.warn = jestMock.fn();
 
     // Stub out matchMedia for Node.
@@ -80,7 +80,7 @@ describe('ReportUIFeatures', () => {
     render(sampleResults);
   });
 
-  afterAll(() => {
+  after(() => {
     global.window = undefined;
     global.HTMLElement = undefined;
     global.HTMLInputElement = undefined;
@@ -105,7 +105,7 @@ describe('ReportUIFeatures', () => {
     describe('third-party filtering', () => {
       let container;
 
-      beforeAll(() => {
+      before(() => {
         const lhr = JSON.parse(JSON.stringify(sampleResults));
         lhr.requestedUrl = lhr.finalUrl = 'http://www.example.com';
         const webpAuditItemTemplate = {
@@ -428,7 +428,7 @@ describe('ReportUIFeatures', () => {
     describe('_getNextSelectableNode', () => {
       let createDiv;
 
-      beforeAll(() => {
+      before(() => {
         createDiv = () => dom.document().createElement('div');
       });
 

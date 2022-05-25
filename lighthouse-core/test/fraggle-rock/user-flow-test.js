@@ -19,7 +19,7 @@ let UserFlow;
 /** @type {typeof import('../../fraggle-rock/user-flow.js')['auditGatherSteps']} */
 let auditGatherSteps;
 
-beforeAll(async () => {
+before(async () => {
   ({UserFlow, auditGatherSteps} = await import('../../fraggle-rock/user-flow.js'));
 });
 

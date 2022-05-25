@@ -86,7 +86,7 @@ describe('Components', () => {
   const originalCreateElement = DOM.prototype.createElement;
   const originalCreateElementNS = DOM.prototype.createElementNS;
 
-  beforeAll(() => {
+  before(() => {
     /**
      * @param {string} classNames
      */
@@ -112,7 +112,7 @@ describe('Components', () => {
     };
   });
 
-  afterAll(() => {
+  after(() => {
     DOM.prototype.createElement = originalCreateElement;
     DOM.prototype.createElementNS = originalCreateElementNS;
   });

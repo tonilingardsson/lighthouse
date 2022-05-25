@@ -23,7 +23,7 @@ let gotoURL;
 /** @type {import('../../../gather/driver/navigation.js')['getNavigationWarnings']} */
 let getNavigationWarnings;
 
-beforeAll(async () => {
+before(async () => {
   ({gotoURL, getNavigationWarnings} = (await import('../../../gather/driver/navigation.js')));
 });
 

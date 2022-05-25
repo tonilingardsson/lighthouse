@@ -19,7 +19,7 @@ const mockLoggerSetLevel = jestMock.fn();
 
 /** @type {import('../../bin.js')} */
 let bin;
-beforeAll(async () => {
+before(async () => {
   await td.replaceEsm('../../run.js', {
     runLighthouse: mockRunLighthouse,
   });
@@ -36,7 +36,7 @@ beforeAll(async () => {
   bin = await import('../../bin.js');
 });
 
-afterAll(async () => {
+after(async () => {
   await td.reset();
 });
 

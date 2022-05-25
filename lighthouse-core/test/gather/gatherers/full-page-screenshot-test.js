@@ -14,7 +14,7 @@ import {createMockContext, mockDriverSubmodules} from '../../fraggle-rock/gather
 /** @type {typeof import('../../../gather/gatherers/full-page-screenshot.js')} */
 let FullPageScreenshotGatherer;
 
-beforeAll(async () => {
+before(async () => {
   FullPageScreenshotGatherer =
     (await import('../../../gather/gatherers/full-page-screenshot.js')).default;
 });

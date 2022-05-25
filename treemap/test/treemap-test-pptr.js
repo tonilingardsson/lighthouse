@@ -33,11 +33,11 @@ describe('Lighthouse Treemap', () => {
   /** @type {Error[]} */
   let pageErrors = [];
 
-  beforeAll(async function() {
+  before(async function() {
     await server.listen(portNumber, 'localhost');
   });
 
-  afterAll(async function() {
+  after(async function() {
     await Promise.all([
       server.close(),
       browser && browser.close(),

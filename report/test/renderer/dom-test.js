@@ -19,7 +19,7 @@ describe('DOM', () => {
   let window;
   let nativeCreateObjectURL;
 
-  beforeAll(() => {
+  before(() => {
     Util.i18n = new I18n('en', {...Util.UIStrings});
     window = new jsdom.JSDOM().window;
 
@@ -32,7 +32,7 @@ describe('DOM', () => {
     dom.setLighthouseChannel('someChannel');
   });
 
-  afterAll(() => {
+  after(() => {
     Util.i18n = undefined;
     URL.createObjectURL = nativeCreateObjectURL;
   });

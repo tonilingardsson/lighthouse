@@ -18,7 +18,7 @@ td.replace('../../../report/renderer/api.js', {
 });
 
 let Topbar: typeof import('../src/topbar').Topbar;
-beforeAll(async () => {
+before(async () => {
   Topbar = (await import('../src/topbar')).Topbar;
 });
 

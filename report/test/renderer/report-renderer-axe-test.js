@@ -16,11 +16,11 @@ describe('ReportRendererAxe', () => {
   describe('with aXe', () => {
     let browser;
 
-    beforeAll(async () => {
+    before(async () => {
       browser = await puppeteer.launch();
     });
 
-    afterAll(async () => {
+    after(async () => {
       await browser.close();
     });
 

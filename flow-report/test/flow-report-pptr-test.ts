@@ -16,7 +16,7 @@ describe('Lighthouse Flow Report', () => {
   let page: Page;
   const pageErrors: Error[] = [];
 
-  beforeAll(async () => {
+  before(async () => {
     browser = await puppeteer.launch({
       headless: true,
     });
@@ -24,14 +24,14 @@ describe('Lighthouse Flow Report', () => {
     page.on('pageerror', pageError => pageErrors.push(pageError));
   }, 35_000);
 
-  afterAll(async () => {
+  after(async () => {
     if (pageErrors.length > 0) console.error(pageErrors);
 
     await browser.close();
   });
 
   describe('Renders the flow report', () => {
-    beforeAll(async () => {
+    before(async () => {
       const html = ReportGenerator.generateFlowReportHtml(flowResult);
       await page.setContent(html);
     });

@@ -14,7 +14,7 @@ td.replace('@sentry/node', jestMock.fn());
 
 // Must mock sentry it is imported.
 let sentryNode;
-beforeAll(async () => {
+before(async () => {
   sentryNode = (await import('@sentry/node')).default;
 });
 

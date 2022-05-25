@@ -64,7 +64,7 @@ let Config;
 
 /** @type {ReturnType<createTypeHackedGatherRunner>} */
 let GatherRunner;
-beforeAll(async () => {
+before(async () => {
   makeMocksForGatherRunner();
   Driver = (await import('../../gather/driver.js')).default;
   GatherRunner_ = (await import('../../gather/gather-runner.js')).default;

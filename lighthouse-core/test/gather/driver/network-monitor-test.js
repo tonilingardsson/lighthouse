@@ -25,7 +25,7 @@ const createMockSendCommandFn =
 /** @type {typeof import('../../../gather/driver/network-monitor.js')} */
 let NetworkMonitor;
 
-beforeAll(async () => {
+before(async () => {
   NetworkMonitor = (await import('../../../gather/driver/network-monitor.js')).default;
 });
 

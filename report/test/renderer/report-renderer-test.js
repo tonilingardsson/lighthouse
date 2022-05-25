@@ -25,7 +25,7 @@ describe('ReportRenderer', () => {
   let renderer;
   let sampleResults;
 
-  beforeAll(() => {
+  before(() => {
     global.console.warn = jestMock.fn();
 
     // Stub out matchMedia for Node.
@@ -45,7 +45,7 @@ describe('ReportRenderer', () => {
     sampleResults = Util.prepareReportResult(sampleResultsOrig);
   });
 
-  afterAll(() => {
+  after(() => {
     global.self = undefined;
     global.matchMedia = undefined;
   });

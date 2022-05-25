@@ -21,7 +21,7 @@ import {
 /** @type {import('../../../fraggle-rock/gather/snapshot-runner.js')['snapshotGather']} */
 let snapshotGather;
 
-beforeAll(async () => {
+before(async () => {
   snapshotGather = (await import('../../../fraggle-rock/gather/snapshot-runner.js')).snapshotGather;
 });
 

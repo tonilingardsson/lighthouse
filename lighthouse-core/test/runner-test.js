@@ -35,7 +35,7 @@ let GatherRunner;
 /** @type {typeof import('../config/config.js')} */
 let Config;
 
-beforeAll(async () => {
+before(async () => {
   Runner = (await import('../runner.js')).default;
   GatherRunner = (await import('../gather/gather-runner.js')).default;
   Config = (await import('../config/config.js')).default;
@@ -111,7 +111,7 @@ describe('Runner', () => {
     const artifactsPath = '.tmp/test_artifacts';
     const resolvedPath = path.resolve(process.cwd(), artifactsPath);
 
-    afterAll(() => {
+    after(() => {
       fs.rmSync(resolvedPath, {recursive: true, force: true});
     });
 

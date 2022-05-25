@@ -28,7 +28,7 @@ import {fnAny} from '../../test-utils.js';
 /** @type {import('../../../fraggle-rock/gather/navigation-runner.js')} */
 let runner;
 
-beforeAll(async () => {
+before(async () => {
   runner = (await import('../../../fraggle-rock/gather/navigation-runner.js'));
 });
 

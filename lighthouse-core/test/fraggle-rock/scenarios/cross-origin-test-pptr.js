@@ -19,7 +19,7 @@ describe('Cross origin timespan', function() {
 
   state.installSetupAndTeardownHooks();
 
-  beforeAll(() => {
+  before(() => {
     state.server.baseDir = state.secondaryServer.baseDir =
       `${LH_ROOT}/lighthouse-core/test/fixtures/fraggle-rock/css-change`;
   });

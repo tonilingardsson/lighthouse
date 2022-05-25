@@ -14,7 +14,7 @@ import * as td from 'testdouble';
 /** @type {typeof import('../../../gather/gatherers/link-elements.js')} */
 let LinkElements;
 
-beforeAll(async () => {
+before(async () => {
   LinkElements = (await import('../../../gather/gatherers/link-elements.js')).default;
 });
 

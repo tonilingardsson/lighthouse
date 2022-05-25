@@ -17,7 +17,7 @@ const sampleResultsStr =
 
 describe('lighthouseRenderer bundle', () => {
   let document;
-  beforeAll(() => {
+  before(() => {
     global.console.warn = jestMock.fn();
 
     const {window} = new jsdom.JSDOM();
@@ -38,7 +38,7 @@ describe('lighthouseRenderer bundle', () => {
     };
   });
 
-  afterAll(() => {
+  after(() => {
     global.window = global.self = undefined;
     global.HTMLInputElement = undefined;
   });

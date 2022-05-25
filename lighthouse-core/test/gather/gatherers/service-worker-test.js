@@ -18,7 +18,7 @@ import {fnAny} from '../../test-utils.js';
 /** @type {typeof import('../../../gather/gatherers/service-worker.js')} */
 let ServiceWorkerGather;
 
-beforeAll(async () => {
+before(async () => {
   ServiceWorkerGather = (await import('../../../gather/gatherers/service-worker.js')).default;
 });
 

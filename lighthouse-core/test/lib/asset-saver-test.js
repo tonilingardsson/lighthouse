@@ -34,7 +34,7 @@ describe('asset-saver helper', () => {
     const tmpDir = `${LH_ROOT}/.tmp/asset-saver-test`;
     fs.mkdirSync(tmpDir, {recursive: true});
 
-    beforeAll(() => {
+    before(() => {
       const artifacts = {
         devtoolsLogs: {
           [Audit.DEFAULT_PASS]: [{message: 'first'}, {message: 'second'}],
