@@ -5,7 +5,7 @@
  */
 
 import {render} from '@testing-library/preact';
-import {h, FunctionComponent} from 'preact';
+import {FunctionComponent} from 'preact';
 
 import {SidebarFlow} from '../../src/sidebar/flow';
 import {FlowResultContext} from '../../src/util';

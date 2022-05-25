@@ -6,7 +6,7 @@
 
 import jestMock from 'jest-mock';
 import * as td from 'testdouble';
-import {h, FunctionComponent} from 'preact';
+import {FunctionComponent} from 'preact';
 import {act, render} from '@testing-library/preact';
 
 import {FlowResultContext, OptionsContext} from '../src/util';

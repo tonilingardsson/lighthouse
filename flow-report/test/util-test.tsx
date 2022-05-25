@@ -7,7 +7,7 @@
 import jestMock from 'jest-mock';
 import {render} from '@testing-library/preact';
 import {renderHook} from '@testing-library/preact-hooks/src/index';
-import {h, FunctionComponent} from 'preact';
+import {FunctionComponent} from 'preact';
 import {act} from 'preact/test-utils';
 
 import {FlowResultContext, useExternalRenderer, useHashState} from '../src/util';
