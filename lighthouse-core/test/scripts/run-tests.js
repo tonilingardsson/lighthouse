@@ -191,14 +191,14 @@ for (const test of filteredTests) {
 const baseArgs = [
   '--require=lighthouse-core/test/test-env/mocha-setup.js',
   '--timeout=20000',
-  '--fail-zero',
   // TODO(esmodules): this is only utilized for CLI tests, since only CLI is ESM + mocks.
   '--loader=testdouble',
-  ...mochaPassThruArgs,
 ];
-if (argv.t) baseArgs.push('--grep', argv.t);
+if (argv.t) baseArgs.push(`--grep='${argv.t}'`);
+if (!argv.t) baseArgs.push('--fail-zero');
 if (argv.bail) baseArgs.push('--bail');
 if (argv.parallel) baseArgs.push('--parallel');
+baseArgs.push(...mochaPassThruArgs);
 
 let didFail = false;
 

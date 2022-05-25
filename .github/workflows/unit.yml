@@ -2,8 +2,7 @@ name: unit
 
 on:
   push:
-    # TODO(DONT MERGE)
-    # branches: [master]
+    branches: [master]
   pull_request: # run on all PRs, not just PRs to a particular branch
 
 jobs:

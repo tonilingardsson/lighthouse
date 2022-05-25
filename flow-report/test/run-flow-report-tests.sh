@@ -15,7 +15,6 @@ ARGS=(
   # util-test.tsx won't finish on its own because of an open MessagePort, so help it out.
   # See https://github.com/jsdom/jsdom/issues/2448#issuecomment-802288244
   --exit
-  $*
 )
 
-yarn mocha ${ARGS[*]}
+yarn mocha ${ARGS[*]} "$@"
