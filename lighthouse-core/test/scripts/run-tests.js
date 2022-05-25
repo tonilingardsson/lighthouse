@@ -187,7 +187,6 @@ const baseArgs = [
 ];
 if (argv.bail) baseArgs.push('--bail');
 if (argv.parallel) baseArgs.push('--parallel');
-if (process.env.CI) baseArgs.push('--forbid-only');
 
 let didFail = false;
 

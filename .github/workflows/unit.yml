@@ -2,7 +2,8 @@ name: unit
 
 on:
   push:
-    branches: [master]
+    # TODO(DONT MERGE)
+    # branches: [master]
   pull_request: # run on all PRs, not just PRs to a particular branch
 
 jobs:
@@ -11,7 +12,6 @@ jobs:
     strategy:
       matrix:
         node: ['14', '16', '17']
-      fail-fast: false # TODO(DONT MERGE)
     runs-on: ubuntu-latest
     name: node ${{ matrix.node }}
     env:
@@ -58,17 +58,15 @@ jobs:
 
     - run: sudo apt-get install xvfb
 
-    # TODO(DONT MERGE): just test core here
-    - name: yarn unit-core
+    - name: yarn unit
       if: ${{ matrix.node != env.LATEST_NODE }}
-      run: xvfb-run --auto-servernum yarn unit-core
+      run: xvfb-run --auto-servernum yarn unit:ci
 
     # Only gather coverage on latest node, where c8 is the most accurate.
     - name: yarn unit:coverage
       if: ${{ matrix.node == env.LATEST_NODE }}
-      # TODO(DONT MERGE): just test core here
       run: |
-        xvfb-run --auto-servernum yarn unit-core
+        xvfb-run --auto-servernum yarn unit:cicoverage
         yarn c8 report --reporter text-lcov > unit-coverage.lcov
     - name: Upload test coverage to Codecov
       if: ${{ matrix.node == env.LATEST_NODE }}
@@ -94,7 +92,8 @@ jobs:
     - run: yarn install --frozen-lockfile --network-timeout 1000000
     - run: yarn build-report
 
-    - run: yarn unit-cli
+    - name: yarn unit-cli
+      run: yarn unit-cli
     - run: yarn diff:sample-json
 
     # Fail if any changes were written to any source files or generated untracked files (ex, from -GA).

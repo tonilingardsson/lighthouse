@@ -7,7 +7,6 @@
 import fs from 'fs';
 import assert from 'assert';
 
-import {jest} from '@jest/globals';
 import puppeteer from 'puppeteer';
 
 import {server} from '../../lighthouse-cli/test/fixtures/static-server.js';
@@ -23,10 +22,6 @@ const sampleFlowResult = LH_ROOT + '/lighthouse-core/test/fixtures/fraggle-rock/
 
 const lighthouseCategories = Object.keys(defaultConfig.categories);
 const getAuditsOfCategory = category => defaultConfig.categories[category].auditRefs;
-
-// These tests run in Chromium and have their own timeouts.
-// Make sure we get the more helpful test-specific timeout error instead of jest's generic one.
-jest.setTimeout(35_000);
 
 // TODO: should be combined in some way with clients/test/extension/extension-test.js
 describe('Lighthouse Viewer', () => {
