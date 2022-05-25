@@ -4,9 +4,9 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-const expect = require('expect');
+import {expect} from 'expect';
 
-const format = require('../../../shared/localization/format.js');
+import * as format from '../../shared/localization/format.js';
 
 // TODO: the `message` value of these matchers seems to be ignored. Ex:
 //
@@ -83,7 +83,7 @@ expect.extend({
     * Asserts that an inspectable promise created by makePromiseInspectable is currently resolved or rejected.
     * This is useful for situations where we want to test that we are actually waiting for a particular event.
     *
-    * @param {ReturnType<import('../test-utils.js')['makePromiseInspectable']>} received
+    * @param {ReturnType<import('./test-utils.js')['makePromiseInspectable']>} received
     * @param {string} failureMessage
     */
   toBeDone(received, failureMessage) {

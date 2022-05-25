@@ -53,7 +53,7 @@ describe('CLI run', function() {
 
       assert.ok(fs.existsSync(filename));
       fileResults = JSON.parse(fs.readFileSync(filename, 'utf-8'));
-    }, 60 * 1000);
+    });
 
     after(() => {
       fs.unlinkSync(filename);
@@ -88,7 +88,7 @@ describe('CLI run', function() {
       assert.ok(groupNames.includes('lighthouse-plugin-simple-new-group'));
     });
   });
-});
+}).timeout(60_000);
 
 describe('flag coercing', () => {
   it('should force to array', () => {

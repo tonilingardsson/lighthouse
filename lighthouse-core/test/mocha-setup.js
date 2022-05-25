@@ -17,13 +17,13 @@
 import fs from 'fs';
 
 import path from 'path';
-import expect from 'expect';
+import {expect} from 'expect';
 import * as td from 'testdouble';
 import jestSnapshot from 'jest-snapshot';
 
 import {timers} from './fake-timers.js';
 import {LH_ROOT} from '../../root.js';
-import './jest-setup/setup.js';
+import './expect-setup.js';
 
 const {SnapshotState, toMatchSnapshot, toMatchInlineSnapshot} = jestSnapshot;
 

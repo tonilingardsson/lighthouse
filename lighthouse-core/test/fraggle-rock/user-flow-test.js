@@ -337,6 +337,7 @@ describe('UserFlow', () => {
 
       const flowResult = await auditGatherSteps(gatherSteps, {config: flowConfig});
 
+      // @ts-expect-error toMatchObject is giving a loud annoying error...
       expect(mockRunner.audit.mock.calls).toMatchObject([
         [
           gatherSteps[0].artifacts,

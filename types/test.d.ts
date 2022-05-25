@@ -10,7 +10,28 @@ declare global {
 }
 
 declare module 'expect' {
-  interface Matchers<R extends void | Promise<void>> {
+  interface Matchers<R extends void | Promise<void>, T={}> {
+    /**
+     * This ensures that a value matches the most recent snapshot with property matchers.
+     * Check out [the Snapshot Testing guide](http://facebook.github.io/jest/docs/snapshot-testing.html) for more information.
+     */
+    // tslint:disable-next-line: no-unnecessary-generics
+    toMatchSnapshot<U extends { [P in keyof T]: any }>(propertyMatchers: Partial<U>, snapshotName?: string): R;
+    /**
+     * This ensures that a value matches the most recent snapshot.
+     * Check out [the Snapshot Testing guide](http://facebook.github.io/jest/docs/snapshot-testing.html) for more information.
+     */
+    toMatchSnapshot(snapshotName?: string): R;
+    /**
+     * This ensures that a value matches the most recent snapshot with property matchers.
+     * Instead of writing the snapshot value to a .snap file, it will be written into the source code automatically.
+     * Check out [the Snapshot Testing guide](http://facebook.github.io/jest/docs/snapshot-testing.html) for more information.
+     */
+    // tslint:disable-next-line: no-unnecessary-generics
+    toMatchInlineSnapshot<U extends { [P in keyof T]: any }>(propertyMatchers: Partial<U>, snapshot?: string): R;
+
+    // The following are custom matchers defined in expect-setup.js
+
     /**
      * Jest's `toBeCloseTo()` exposed as an asymmetric matcher. This allows
      * approximate numeric testing within matchers like `toMatchObject()`.
