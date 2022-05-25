@@ -21,20 +21,10 @@ import path from 'path';
 import expect from 'expect';
 import * as td from 'testdouble';
 import jestSnapshot from 'jest-snapshot';
-// import * as preact from 'preact';
 
 import {timers} from './fake-timers.js';
 import {LH_ROOT} from '../../root.js';
 import './jest-setup/setup.js';
-
-// global.React = preact;
-// global.h = preact.h;
-
-// https://github.com/testing-library/preact-testing-library/issues/36#issuecomment-1136484478
-fs.writeFileSync(`${LH_ROOT}/node_modules/@testing-library/preact/dist/esm/package.json`,
-  '{"type": "module"}');
-fs.writeFileSync(`${LH_ROOT}/node_modules/@testing-library/preact-hooks/src/package.json`,
-  '{"type": "module"}');
 
 const {SnapshotState, toMatchSnapshot, toMatchInlineSnapshot} = jestSnapshot;
 

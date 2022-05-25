@@ -4,10 +4,18 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
+import fs from 'fs';
 import {MessageChannel} from 'worker_threads';
 
 import jestMock from 'jest-mock';
 import {JSDOM} from 'jsdom';
+
+// @ts-ignore: File is not under 'rootDir'
+import {LH_ROOT} from '../../../root.js';
+
+// https://github.com/testing-library/preact-testing-library/issues/36#issuecomment-1136484478
+fs.writeFileSync(`${LH_ROOT}/node_modules/@testing-library/preact-hooks/src/package.json`,
+  '{"type": "module"}');
 
 export default {
   mochaHooks: {
