@@ -7,7 +7,6 @@
 import fs from 'fs';
 
 import jsdom from 'jsdom';
-import expect from 'expect';
 
 import {DOM} from '../../renderer/dom.js';
 import {LH_ROOT} from '../../../root.js';
