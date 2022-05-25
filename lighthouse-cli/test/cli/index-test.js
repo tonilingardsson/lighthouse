@@ -90,6 +90,7 @@ describe('CLI Tests', function() {
       assert.strictEqual(config.settings.auditMode, false);
 
       expect(config).toMatchSnapshot();
+      expect(config).toBeApproximately(1);
     });
 
     it('should print the overridden config and exit immediately after', () => {

@@ -5,13 +5,12 @@
  */
 
 declare global {
-  const expect: import('expect').Expect;
+  var expect: import('expect').Expect;
   type Mock<T, Y> = import('jest-mock').Mock<T, Y>;
 }
 
 declare module 'expect' {
   interface Matchers<R extends void | Promise<void>> {
-    a: 1,
     /**
      * Jest's `toBeCloseTo()` exposed as an asymmetric matcher. This allows
      * approximate numeric testing within matchers like `toMatchObject()`.

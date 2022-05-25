@@ -221,7 +221,7 @@ function makeMocksForGatherRunner() {
  * Same as jestMock.fn(), but uses `any` instead of `unknown`.
  */
 const fnAny = () => {
-  return /** @type {jest.Mock<any, any>} */ (jestMock.fn());
+  return /** @type {Mock<any, any>} */ (jestMock.fn());
 };
 
 /**
@@ -278,7 +278,7 @@ function getURLArtifactFromDevtoolsLog(devtoolsLog) {
  *
  * @param {string} modulePath
  * @param {ImportMeta} importMeta
- * @return {Promise<Record<string, jest.Mock>>}
+ * @return {Promise<Record<string, Mock<any, any>>>}
  */
 async function importMock(modulePath, importMeta) {
   const dir = path.dirname(url.fileURLToPath(importMeta.url));
@@ -296,7 +296,7 @@ async function importMock(modulePath, importMeta) {
  *
  * @param {string} modulePath
  * @param {ImportMeta} importMeta
- * @return {Record<string, jest.Mock>}
+ * @return {Record<string, Mock<any, any>>}
  */
 function requireMock(modulePath, importMeta) {
   const dir = path.dirname(url.fileURLToPath(importMeta.url));

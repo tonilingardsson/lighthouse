@@ -11,7 +11,6 @@ import {createTestState, getAuditsBreakdown} from './pptr-test-utils.js';
 import {LH_ROOT} from '../../../../root.js';
 
 describe('Fraggle Rock API', function() {
-  // @ts-expect-error
   // eslint-disable-next-line no-invalid-this
   this.timeout(120_000);
 
