@@ -9,7 +9,7 @@ import {MessageChannel} from 'worker_threads';
 
 import jestMock from 'jest-mock';
 import {JSDOM} from 'jsdom';
-import {h, Fragment} from 'preact';
+import * as preact from 'preact';
 
 // @ts-ignore: File is not under 'rootDir'
 import {LH_ROOT} from '../../../root.js';
@@ -19,9 +19,7 @@ fs.writeFileSync(`${LH_ROOT}/node_modules/@testing-library/preact-hooks/src/pack
   '{"type": "module"}');
 
 // @ts-expect-error
-global.h = h;
-// @ts-expect-error
-global.Fragment = Fragment;
+global.React = preact;
 
 export default {
   mochaHooks: {
