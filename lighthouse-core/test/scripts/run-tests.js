@@ -128,6 +128,10 @@ const rawArgv = y
       type: 'boolean',
       default: false,
     },
+    't': {
+      type: 'string',
+      describe: 'an alias for --grep, to run only tests with matching titles',
+    },
   })
   .wrap(y.terminalWidth())
   .argv;
@@ -192,6 +196,7 @@ const baseArgs = [
   '--loader=testdouble',
   ...mochaPassThruArgs,
 ];
+if (argv.t) baseArgs.push('--grep', argv.t);
 if (argv.bail) baseArgs.push('--bail');
 if (argv.parallel) baseArgs.push('--parallel');
 
