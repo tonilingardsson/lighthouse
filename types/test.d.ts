@@ -4,8 +4,30 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-import { Expect } from "expect";
-
 declare global {
-  const expect: Expect;
+  const expect: import('expect').Expect;
+  type Mock<T, Y> = import('jest-mock').Mock<T, Y>;
 }
+
+declare module 'expect' {
+  interface Matchers<R extends void | Promise<void>> {
+    a: 1,
+    /**
+     * Jest's `toBeCloseTo()` exposed as an asymmetric matcher. This allows
+     * approximate numeric testing within matchers like `toMatchObject()`.
+     * The default for `numDigits` is 2.
+     */
+    toBeApproximately(expected: number, numDigits?: number): R;
+    /**
+     * Asserts that an inspectable promise created by makePromiseInspectable is currently resolved or rejected.
+     * This is useful for situations where we want to test that we are actually waiting for a particular event.
+     */
+    toBeDone: (failureMessage?: string) => R;
+    /**
+     * Asserts that an i18n string (using en-US) matches an expected pattern.
+     */
+    toBeDisplayString: (pattern: RegExp | string) => R;
+  }
+}
+
+export {};

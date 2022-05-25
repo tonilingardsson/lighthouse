@@ -39,7 +39,7 @@ const mockRunner = mockRunnerModule();
 // Establish the mocks before we import the file under test.
 td.replace('../../../runner.js', mockRunner);
 
-/** @typedef {{meta: LH.Gatherer.GathererMeta<'Accessibility'>, getArtifact: jest.Mock<any, any>, startInstrumentation:jest.Mock<any, any>, stopInstrumentation: jest.Mock<any, any>, startSensitiveInstrumentation:jest.Mock<any, any>, stopSensitiveInstrumentation: jest.Mock<any, any>}} MockGatherer */
+/** @typedef {{meta: LH.Gatherer.GathererMeta<'Accessibility'>, getArtifact: Mock<any, any>, startInstrumentation: Mock<any, any>, stopInstrumentation: Mock<any, any>, startSensitiveInstrumentation: Mock<any, any>, stopSensitiveInstrumentation:  Mock<any, any>}} MockGatherer */
 
 describe('NavigationRunner', () => {
   let requestedUrl = '';
