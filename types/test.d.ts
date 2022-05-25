@@ -7,7 +7,5 @@
 import { Expect } from "expect";
 
 declare global {
-  var expect: Expect;
+  const expect: Expect;
 }
-
-export {};
