@@ -14,6 +14,8 @@
 
 /* eslint-disable import/order */
 
+// TODO: all of test-env should be moved to a root test folder
+
 import fs from 'fs';
 
 import path from 'path';
@@ -21,9 +23,9 @@ import {expect} from 'expect';
 import * as td from 'testdouble';
 import jestSnapshot from 'jest-snapshot';
 
-import {timers} from './fake-timers.js';
-import {LH_ROOT} from '../../root.js';
+import {LH_ROOT} from '../../../root.js';
 import './expect-setup.js';
+import {timers} from './fake-timers.js';
 
 const {SnapshotState, toMatchSnapshot, toMatchInlineSnapshot} = jestSnapshot;
 
@@ -33,6 +35,16 @@ process.env.TZ = 'UTC';
 
 // Expected to be set by lh-env.js
 process.env.NODE_TEST = 'test';
+
+global.expect = expect;
+
+// Force marky to not use Node's performance, which is messed up by fake timers.
+const performance = global.performance;
+// @ts-expect-error
+global.performance = undefined;
+// @ts-expect-error: no types
+await import('marky');
+global.performance = performance;
 
 /** @type {Map<string, SnapshotState['prototype']>} */
 const snapshotStatesByTestFile = new Map();
@@ -114,16 +126,6 @@ expect.extend({
   },
 });
 
-global.expect = expect;
-
-// Force marky to not use Node's performance, which is messed up by fake timers.
-const performance = global.performance;
-// @ts-expect-error
-global.performance = undefined;
-// @ts-expect-error: no types
-await import('marky');
-global.performance = performance;
-
 const testPlugins = [
   'lighthouse-plugin-no-category',
   'lighthouse-plugin-no-groups',
@@ -143,6 +145,7 @@ export default {
       mochaCurrentTest = this.currentTest;
     },
     async beforeAll() {
+      // TODO: delete
       // global.React = await import('preact');
       // jsdom();
     },

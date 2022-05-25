@@ -19,7 +19,7 @@ import glob from 'glob';
 import {LH_ROOT} from '../../../root.js';
 
 // Some tests replace real modules with mocks in the global scope of the test file
-// (outside beforeAll / a test unit). Before doing any lifecycle stuff, Mocha will load
+// (outside 'before' lifecycle / a test unit). Before doing any lifecycle stuff, Mocha will load
 // all test files (everything if --no-parallel, else each worker will load a subset of the files
 // all at once). This results in unexpected mocks contaminating other test files.
 //
@@ -129,17 +129,21 @@ const rawArgv = y
 const argv =
   /** @type {Awaited<typeof rawArgv> & CamelCasify<Awaited<typeof rawArgv>>} */ (rawArgv);
 
+// This captures all of our mocha tests except for:
+// * flow-report, because it needs to provide additional mocha flags
+// * various *-test-pptr.js integration tests, which are long so are handled explicitly in
+//   specific package.json scripts
 const defaultTestMatches = [
-  'lighthouse-core/**/*-test.js',
+  'build/**/*-test.js',
+  'clients/test/**/*-test.js',
   'lighthouse-cli/**/*-test.js',
-  'report/**/*-test.js',
+  'lighthouse-core/**/*-test.js',
   'lighthouse-core/test/fraggle-rock/**/*-test-pptr.js',
+  'report/**/*-test.js',
+  'shared/**/*-test.js',
+  'third-party/**/*-test.js',
   'treemap/**/*-test.js',
   'viewer/**/*-test.js',
-  'third-party/**/*-test.js',
-  'clients/test/**/*-test.js',
-  'shared/**/*-test.js',
-  'build/**/*-test.js',
 ];
 
 const mochaPassThruArgs = argv._.filter(arg => typeof arg !== 'string' || arg.startsWith('--'));
@@ -150,9 +154,10 @@ const filterFilePatterns = argv._.filter(arg => !(typeof arg !== 'string' || arg
 const testsGlob = argv.testMatch || `{${defaultTestMatches.join(',')}}`;
 const allTestFiles = glob.sync(testsGlob, {cwd: LH_ROOT, absolute: true});
 
-// TODO: uhhh... why absolute path?
 // If provided, filter the test files using a basic string includes on the absolute path of
 // each test file. Map back to a relative path because it's nice to keep the printed commands shorter.
+// Why pass `absolute: true` to glob above? So that this works:
+//     yarn mocha /Users/cjamcl/src/lighthouse/lighthouse-core/test/runner-test.js
 const filteredTests = (
   filterFilePatterns.length ?
     allTestFiles.filter((file) => filterFilePatterns.some(pattern => file.includes(pattern))) :
@@ -175,12 +180,7 @@ for (const test of filteredTests) {
 }
 
 const baseArgs = [
-  // https://github.com/nodejs/modules/issues/513
-  // '--loader=@cspotcode/multiloader/compose?ts-node/esm,testdouble',
-  '--loader=@esbuild-kit/esm-loader',
-  // '--loader=ts-node/esm',
-  // '--loader=testdouble',
-  '--require=lighthouse-core/test/mocha-setup.js',
+  '--require=lighthouse-core/test/test-env/mocha-setup.js',
   '--timeout=20000',
   '--fail-zero',
   ...mochaPassThruArgs,
@@ -207,9 +207,7 @@ function exit(code) {
  */
 function runMochaCLI(tests) {
   const file = 'node_modules/.bin/mocha';
-  // const file = 'node_modules/.bin/ts-node';
   const args = [
-    // 'node_modules/.bin/mocha',
     ...baseArgs,
     ...tests,
   ];

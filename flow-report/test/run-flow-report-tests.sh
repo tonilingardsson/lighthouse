@@ -11,6 +11,7 @@ set -eux
 ARGS=(
   --testMatch='{flow-report/**/*-test.ts,flow-report/**/*-test.tsx}'
   --require=flow-report/test/setup/env-setup.ts
+  --loader=@esbuild-kit/esm-loader
   # util-test.tsx won't finish on its own because of an open MessagePort, so help it out.
   # See https://github.com/jsdom/jsdom/issues/2448#issuecomment-802288244
   --exit

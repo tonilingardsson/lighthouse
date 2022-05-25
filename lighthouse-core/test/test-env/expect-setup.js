@@ -6,7 +6,7 @@
 
 import {expect} from 'expect';
 
-import * as format from '../../shared/localization/format.js';
+import * as format from '../../../shared/localization/format.js';
 
 // TODO: the `message` value of these matchers seems to be ignored. Ex:
 //
@@ -83,7 +83,7 @@ expect.extend({
     * Asserts that an inspectable promise created by makePromiseInspectable is currently resolved or rejected.
     * This is useful for situations where we want to test that we are actually waiting for a particular event.
     *
-    * @param {ReturnType<import('./test-utils.js')['makePromiseInspectable']>} received
+    * @param {ReturnType<import('../test-utils.js')['makePromiseInspectable']>} received
     * @param {string} failureMessage
     */
   toBeDone(received, failureMessage) {

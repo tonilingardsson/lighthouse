@@ -15,7 +15,7 @@ import {LH_ROOT} from '../../root.js';
 import {createCommonjsRefs} from '../scripts/esm-utils.js';
 import * as mockCommands from './gather/mock-commands.js';
 import NetworkRecorder from '../lib/network-recorder.js';
-import {timers} from './fake-timers.js';
+import {timers} from './test-env/fake-timers.js';
 
 const {require} = createCommonjsRefs(import.meta);
 
