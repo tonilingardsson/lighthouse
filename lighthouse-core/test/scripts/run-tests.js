@@ -183,6 +183,8 @@ const baseArgs = [
   '--require=lighthouse-core/test/test-env/mocha-setup.js',
   '--timeout=20000',
   '--fail-zero',
+  // TODO(esmodules): this is only utilized for CLI tests, since only CLI is ESM + mocks.
+  '--loader=testdouble',
   ...mochaPassThruArgs,
 ];
 if (argv.bail) baseArgs.push('--bail');
