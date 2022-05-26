@@ -144,11 +144,6 @@ export default {
       // Needed so `expect` extension method can access information about the current test.
       mochaCurrentTest = this.currentTest;
     },
-    async beforeAll() {
-      // TODO: delete
-      // global.React = await import('preact');
-      // jsdom();
-    },
     async afterAll() {
       timers.dispose();
       td.reset();
