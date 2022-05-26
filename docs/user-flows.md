@@ -14,18 +14,20 @@ In these cases, you want Lighthouse on a _flow_, not just a page load.
 
 Lighthouse can now run in three modes: navigations, timespans, and snapshots. Each mode has its own unique use cases, benefits, and limitations. Later, you'll create a flow by combining these three core report types.
 
-* **Navigation mode** analyzes a single page load. Prior to v10, all Lighthouse runs were essentially in this mode.
+* **Navigation mode** analyzes a single page load. Prior to v9.6.1, all Lighthouse runs were essentially in this mode.
 * **Timespan mode** analyzes an arbitrary period of time, typically containing user interactions.
 * **Snapshot mode** analyzes the page in a particular state.
 
 | | |
 |:---:|---|
-| Navigation <br> <img src="https://user-images.githubusercontent.com/39191/168928225-f2157fda-5131-4bd0-9121-b1a0b2f869a7.png" height="96" width="141">  | **Benefits** <br>  ✅ Provides an overall performance score and all metrics.<br>✅ Contains the most advice of all report types.<br><br> **Limitations** <br>  🤔 Cannot analyze form submissions or single page app transitions.<br>🤔 Cannot analyze content that isn't available immediately on page load.<br><br> **Use Cases** <br>  👍 Obtain a Lighthouse Performance score.<br>👍 Measure all performance metrics.<br>👍 Assess Progressive Web App capabilities. |
-| Timespan <br> <img src="https://user-images.githubusercontent.com/39191/168928251-c7025cd5-0086-4db8-ae52-95a5b5675adf.png" height="96" width="141">  | **Benefits** <br>  ✅ Provides timerange-based metrics such as TBT, CLS and INP.<br>✅ Analyzes any period of time, including user interactions or single page app transitions.<br><br> **Limitations** <br>  🤔 Does not provide an overall performance score.<br>🤔 Cannot analyze moment-based performance metrics (e.g. Largest Contentful Paint).<br>🤔 Cannot analyze state-of-the-page issues (e.g. no Accessibility category)<br><br> **Use Cases** <br>  👍 Measure layout shifts and JavaScript execution time on a series of interactions.<br>👍 Discover performance opportunities to improve the experience for long-lived pages and SPAs. |
-| Snapshot <br> <img src="https://user-images.githubusercontent.com/39191/168931653-b45e0b6b-c5bd-4d8d-85b6-fee8425186a0.png" height="96" width="141">  | **Benefits** <br>   ✅ Analyzes the page in its current state.<br><br> **Limitations** <br>  🤔 Does not provide an overall performance score or metrics.<br>🤔 Cannot analyze any issues outside the current DOM (e.g. no network, main-thread, or performance analysis).<br><br> **Use Cases** <br>  👍 Find accessibility issues in single page applications or complex forms.<br>👍 Evaluate best practices of menus and UI elements hidden behind interaction. |
+| Navigation <br> <img src="https://user-images.githubusercontent.com/39191/170560057-4f7cab97-ee6b-497f-8e18-1f84ba3616dd.png" height="96" width="141">  | **Use Cases** <br>  ✅ Obtain a Lighthouse Performance score and all performance metrics.<br>✅ Assess Progressive Web App capabilities.<br><br> **Limitations** <br>  🤔 Cannot analyze form submissions or single page app transitions.<br>🤔 Cannot analyze content that isn't available immediately on page load. |
+| Timespan <br> <img src="https://user-images.githubusercontent.com/39191/170560049-a6b630a2-187a-4233-9f8b-8d7fb276f51e.png" height="96" width="141">  | **Use Cases** <br> ✅ Measure layout shifts and JavaScript execution time over a timerange including interactions.<br>✅ Discover performance opportunities to improve the experience for long-lived pages and SPAs. <br>✅ Quantify single page app transitions.<br><br> **Limitations** <br>  🤔 Does not provide an overall performance score.<br>🤔 Cannot analyze moment-based performance metrics (e.g. Largest Contentful Paint).<br>🤔 Cannot analyze state-of-the-page issues (e.g. no Accessibility category) |
+| Snapshot <br> <img src="https://user-images.githubusercontent.com/39191/170560055-fb599418-c94d-44bf-9921-be4dce6abccf.png" height="96" width="141">  | **Use Cases** <br> ✅ Analyze the page in its current state.<br> ✅ Find accessibility issues deep within SPAs or complex forms.<br>✅ Evaluate best practices of menus and UI elements hidden behind interaction.<br><br> **Limitations** <br>  🤔 Does not provide an overall performance score or metrics.<br>🤔 Cannot analyze any issues outside the current DOM (e.g. no network, main-thread, or performance analysis). |
 
 
 ### Navigation mode
+
+ <img src="https://user-images.githubusercontent.com/39191/170560057-4f7cab97-ee6b-497f-8e18-1f84ba3616dd.png">
 
 In DevTools, navigation is easy: ensure it's the selected mode and then click _Analyze page load_.
 
@@ -70,6 +72,8 @@ This callback function _must_ perform an action that will trigger a navigation. 
 
 ### Timespan
 
+<img src="https://user-images.githubusercontent.com/39191/170560049-a6b630a2-187a-4233-9f8b-8d7fb276f51e.png">
+
 In DevTools, select "Timespan" as the mode and click _Start timespan_. Record whatever timerange or interactions is desired and then click _End timespan_.
 
 ![timespandt](https://user-images.githubusercontent.com/39191/168929168-ac45d198-f609-4acb-86a7-51775578c8e0.png)
@@ -100,6 +104,8 @@ import lighthouse from 'lighthouse/lighthouse-core/fraggle-rock/api.js';
 
 ### Snapshot
 
+<img src="https://user-images.githubusercontent.com/39191/170560055-fb599418-c94d-44bf-9921-be4dce6abccf.png">
+
 In DevTools, select "Snapshot" as the mode. Set up the page in the state you want to evaluate. Then, click _Analyze page state_.
 
 ![snapshotdt](https://user-images.githubusercontent.com/39191/168929172-92a70108-a053-4dda-b719-2900b9d3d956.png)
@@ -128,7 +134,7 @@ import lighthouse from 'lighthouse/lighthouse-core/fraggle-rock/api.js';
 
 ## Creating a Flow
 
-<img src="https://user-images.githubusercontent.com/39191/168931109-5ae80620-7464-4d98-a834-71169a5b6a61.png" height=300>
+<img src="https://user-images.githubusercontent.com/39191/170560932-f10c8465-de49-4e75-be6c-1cf408cf84f6.png" height=240>
 
 
 So far we've seen individual Lighthouse modes in action. The true power of flows comes from combining these building blocks into a comprehensive flow to capture the user's entire experience. Analyzing a multi-step user flow is currently only available [using the Lighthouse Node API along with Puppeteer](https://web.dev/lighthouse-user-flows/).
