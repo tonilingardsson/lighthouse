@@ -2,8 +2,6 @@
 
 {
   "compilerOptions": {
-    "outDir": ".tmp/tsbuildinfo/base",
-
     "composite": true,
     "emitDeclarationOnly": true,
     "declarationMap": true,
