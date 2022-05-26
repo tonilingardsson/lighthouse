@@ -49,8 +49,8 @@ describe('Topbar', () => {
     );
   });
 
-  // TODO(mocha): mock not being called
-  it('save button opens save dialog for HTML file', async () => {
+  // TODO(mocha): can't get esbuild loader and testdouble loader to work at same time
+  it.skip('save button opens save dialog for HTML file', async () => {
     options = {getReportHtml: () => '<html></html>'};
     const root = render(<Topbar onMenuClick={() => {}}/>, {wrapper});
 
