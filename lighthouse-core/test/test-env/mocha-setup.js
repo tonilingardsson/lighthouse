@@ -10,6 +10,7 @@
  *    - configures mocha to use jest-snapshot
  *    - symlinks `fixtures/config-plugins/lighthouse-plugin-simple` to a place where the default
  *      config module resolution will find it
+ *    - saves failed test results if env LH_FAILED_TESTS_FILE is set
  */
 
 /* eslint-disable import/order */
@@ -135,6 +136,9 @@ const testPlugins = [
 /** @type {Mocha.Test} */
 let mochaCurrentTest;
 
+/** @type {any[]} */
+const failedTests = [];
+
 export default {
   mochaHooks: {
     /** @this {Mocha.Context} */
@@ -143,6 +147,21 @@ export default {
 
       // Needed so `expect` extension method can access information about the current test.
       mochaCurrentTest = this.currentTest;
+    },
+    /** @this {Mocha.Context} */
+    afterEach() {
+      if (!this.currentTest) throw new Error('unexpected value');
+
+      const {file, title, state} = this.currentTest;
+      if (!file) throw new Error('unexpected value');
+
+      if (state === 'failed') {
+        failedTests.push({
+          file: path.relative(LH_ROOT, file),
+          title,
+          error: this.currentTest.err?.toString(),
+        });
+      }
     },
     async afterAll() {
       timers.dispose();
@@ -164,6 +183,10 @@ export default {
         process.on('exit', () => {
           console.log('To update snapshots, run again with `yarn mocha -u`');
         });
+      }
+
+      if (process.env.LH_FAILED_TESTS_FILE && failedTests.length) {
+        fs.writeFileSync(process.env.LH_FAILED_TESTS_FILE, JSON.stringify(failedTests, null, 2));
       }
     },
   },

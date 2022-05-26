@@ -10,6 +10,7 @@
  */
 
 import {execFileSync} from 'child_process';
+import fs from 'fs';
 import path from 'path';
 
 import yargs from 'yargs';
@@ -202,17 +203,55 @@ baseArgs.push(...mochaPassThruArgs);
 
 let didFail = false;
 
+const failedTestsDir = `${LH_ROOT}/.tmp/failing-tests`;
+fs.rmSync(failedTestsDir, {recursive: true, force: true});
+fs.mkdirSync(failedTestsDir, {recursive: true});
+
 /**
  * @param {number} code
  */
 function exit(code) {
   if (code === 0) {
     console.log('Tests passed');
-  } else {
-    console.log('Tests failed');
+    process.exit(0);
   }
+
+  if (numberMochaInvocations === 1) {
+    console.log('Tests failed');
+    process.exit(code);
+  }
+
+  // If running many instances of mocha, failed results can get lost in the output.
+  // So keep track of failures and re-print them at the very end.
+  // See mocha-setup.js afterAll.
+
+  const allFailedTests = [];
+  for (const file of glob.sync('*.json', {cwd: failedTestsDir, absolute: true})) {
+    allFailedTests.push(...JSON.parse(fs.readFileSync(file, 'utf-8')));
+  }
+
+  const groupedByFile = new Map();
+  for (const failedTest of allFailedTests) {
+    const failedTests = groupedByFile.get(failedTest.file) || [];
+    failedTests.push(failedTest);
+    groupedByFile.set(failedTest.file, failedTests);
+  }
+
+  console.log(`${allFailedTests.length} tests failed`);
+  console.log('Printing failing tests:\n===========\n');
+
+  for (const [file, failedTests] of groupedByFile) {
+    console.log(`${file}\n`);
+    for (const failedTest of failedTests) {
+      console.log(`= ${failedTest.title}\n`);
+      console.log(`${failedTest.error}\n`);
+    }
+  }
+
   process.exit(code);
 }
+
+let numberMochaInvocations = 0;
 
 /**
  * @param {string[]} tests
@@ -232,6 +271,7 @@ function runMochaCLI(tests) {
         ...process.env,
         SNAPSHOT_UPDATE: argv.update ? '1' : undefined,
         TS_NODE_TRANSPILE_ONLY: '1',
+        LH_FAILED_TESTS_FILE: `${failedTestsDir}/output-${numberMochaInvocations}.json`,
       },
       stdio: 'inherit',
     });
@@ -241,6 +281,8 @@ function runMochaCLI(tests) {
     } else {
       didFail = true;
     }
+  } finally {
+    numberMochaInvocations += 1;
   }
 }
 
