@@ -59,6 +59,8 @@ import lighthouse from 'lighthouse/lighthouse-core/fraggle-rock/api.js';
   writeFileSync('report.html', await flow.generateReport());
 })();
 ```
+</details>
+<br>
 
 ##### Triggering a navigation via user interactions
 
@@ -101,6 +103,8 @@ import lighthouse from 'lighthouse/lighthouse-core/fraggle-rock/api.js';
   writeFileSync('report.html', await flow.generateReport());
 })();
 ```
+</details>
+<br>
 
 ### Snapshot
 
@@ -131,6 +135,8 @@ import lighthouse from 'lighthouse/lighthouse-core/fraggle-rock/api.js';
   writeFileSync('report.html', await flow.generateReport());
 })();
 ```
+</details>
+<br>
 
 ## Creating a Flow
 
