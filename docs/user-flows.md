@@ -14,7 +14,7 @@ In these cases, you want Lighthouse on a _flow_, not just a page load.
 
 Lighthouse can now run in three modes: navigations, timespans, and snapshots. Each mode has its own unique use cases, benefits, and limitations. Later, you'll create a flow by combining these three core report types.
 
-* **Navigation mode** analyzes a single page load. Prior to v9.6.1, all Lighthouse runs were essentially in this mode.
+* **Navigation mode** analyzes a single page load. Prior to v9.6.0, all Lighthouse runs were essentially in this mode.
 * **Timespan mode** analyzes an arbitrary period of time, typically containing user interactions.
 * **Snapshot mode** analyzes the page in a particular state.
 
