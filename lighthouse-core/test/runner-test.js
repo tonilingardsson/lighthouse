@@ -688,7 +688,7 @@ describe('Runner', () => {
       const AuditClass = require(auditPath);
       assert.strictEqual(AuditClass.meta.id, auditExpectedName);
     });
-  }).timeout(20_000);
+  });
 
   it('results include artifacts when given artifacts and audits', () => {
     const config = new Config({
@@ -876,7 +876,7 @@ describe('Runner', () => {
       assert.ok(/^Waiting for DevTools protocol.*Method: Method.Failure/.test(err.friendlyMessage),
         'did not localize error message');
     }
-  }).timeout(20_000);
+  });
 
   it('can handle array of outputs', async () => {
     const url = 'https://example.com';
@@ -893,5 +893,5 @@ describe('Runner', () => {
       'did not return multiple reports');
     assert.ok(JSON.parse(results.report[0]), 'did not return json output');
     assert.ok(/<!doctype/.test(results.report[1]), 'did not return html output');
-  }).timeout(20_000);
+  });
 });

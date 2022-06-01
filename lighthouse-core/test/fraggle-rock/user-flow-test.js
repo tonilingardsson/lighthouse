@@ -338,6 +338,9 @@ describe('UserFlow', () => {
       const flowResult = await auditGatherSteps(gatherSteps, {config: flowConfig});
 
       // @ts-expect-error toMatchObject is giving a loud annoying error...
+      // Not sure why.
+      //     Index signature for type 'string' is missing
+      //     in type '(Artifacts | { config: { settings: { skipAudits: string[]; }; }; })[]'
       expect(mockRunner.audit.mock.calls).toMatchObject([
         [
           gatherSteps[0].artifacts,

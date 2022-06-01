@@ -24,6 +24,8 @@ describe('ReportRendererAxe', () => {
       await browser.close();
     });
 
+    // This test takes 10s on fast hardware, but can take longer in CI.
+    // https://github.com/dequelabs/axe-core/tree/b573b1c1/doc/examples/jest_react#timeout-issues
     it('renders without axe violations', async () => {
       const page = await browser.newPage();
       const htmlReport = reportGenerator.generateReportHtml(sampleResults);
@@ -78,8 +80,6 @@ describe('ReportRendererAxe', () => {
         };
       });
       expect(axeSummary).toMatchSnapshot();
-    }).timeout(20_000);
-    // This test takes 10s on fast hardware, but can take longer in CI.
-    // https://github.com/dequelabs/axe-core/tree/b573b1c1/doc/examples/jest_react#timeout-issues
+    });
   });
 });

@@ -14,6 +14,8 @@ import * as preact from 'preact';
 // @ts-ignore: File is not under 'rootDir'
 import {LH_ROOT} from '../../../root.js';
 
+// These modules aren't imported correctly if these directories aren't defined to use ES modules.
+// Similar to this, which was resolved but their fix didn't work for us:
 // https://github.com/testing-library/preact-testing-library/issues/36#issuecomment-1136484478
 fs.writeFileSync(`${LH_ROOT}/node_modules/@testing-library/preact/dist/esm/package.json`,
   '{"type": "module"}');

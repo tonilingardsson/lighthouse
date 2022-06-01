@@ -7,7 +7,6 @@
 import {render} from '@testing-library/preact';
 
 import {Markdown} from '../../src/wrappers/markdown';
-import '../setup/env-setup';
 
 describe('Markdown', () => {
   it('renders markdown text', () => {
