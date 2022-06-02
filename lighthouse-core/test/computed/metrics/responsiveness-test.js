@@ -6,10 +6,12 @@
 
 import {strict as assert} from 'assert';
 
+import {readJson} from '../../../../root.js';
 import Responsiveness from '../../../computed/metrics/responsiveness.js';
 import createTestTrace from '../../create-test-trace.js';
-import interactionTrace from '../../fixtures/traces/timespan-responsiveness-m103.trace.json';
-import noInteractionTrace from '../../fixtures/traces/frame-metrics-m89.json';
+
+const interactionTrace = readJson('../../fixtures/traces/timespan-responsiveness-m103.trace.json', import.meta);
+const noInteractionTrace = readJson('../../fixtures/traces/frame-metrics-m89.json', import.meta);
 
 const childFrameId = 'CAF4634127666E186C9C8B35627DBF0B';
 
@@ -235,7 +237,7 @@ describe('Metric: Responsiveness', () => {
       .rejects.toThrow(`unexpected responsiveness interactionType 'brainWave'`);
   });
 
-  it('throws an OLD_CHROME error if provided with the old trace event format', async () => {
+  it('returns a fallback timing event if provided with the old trace event format', async () => {
     const interactionEvents = [{
       ts: 500,
       maxDuration: 200,
@@ -250,8 +252,11 @@ describe('Metric: Responsiveness', () => {
       trace,
       settings: {throttlingMethod: 'provided'},
     };
-    await expect(Responsiveness.request(metricInputData, {computedCache: new Map()}))
-      .rejects.toThrow('UNSUPPORTED_OLD_CHROME');
+    const event = await Responsiveness.request(metricInputData, {computedCache: new Map()});
+    expect(event).toEqual({
+      name: 'FallbackTiming',
+      duration: 200,
+    });
   });
 
   it('only finds interaction events from the same frame as the responsiveness event', async () => {
