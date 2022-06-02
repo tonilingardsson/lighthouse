@@ -35,7 +35,7 @@ class CriConnection extends Connection {
    */
   async connect() {
     const response = await this._runJsonCommand('new');
-    this._connectToSocket(/** @type {LH.DevToolsJsonTarget} */(response));
+    return this._connectToSocket(/** @type {LH.DevToolsJsonTarget} */(response));
   }
 
   /**
