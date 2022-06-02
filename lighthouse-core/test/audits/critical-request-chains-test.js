@@ -4,15 +4,14 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-
-/* eslint-env jest */
-
 import {strict as assert} from 'assert';
 
+import {readJson} from '../../../root.js';
 import CriticalRequestChains from '../../audits/critical-request-chains.js';
-import redditDevtoolsLog from '../fixtures/artifacts/perflog/defaultPass.devtoolslog.json';
 import createTestTrace from '../create-test-trace.js';
 import networkRecordsToDevtoolsLog from '../network-records-to-devtools-log.js';
+
+const redditDevtoolsLog = readJson('../fixtures/artifacts/perflog/defaultPass.devtoolslog.json', import.meta);
 
 const FAILING_CHAIN_RECORDS = [
   {

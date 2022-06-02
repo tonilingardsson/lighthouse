@@ -4,9 +4,6 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-
-/* eslint-env jest */
-
 import path from 'path';
 
 import {jest} from '@jest/globals';
@@ -31,9 +28,10 @@ import {createCommonjsRefs} from '../../scripts/esm-utils.js';
 
 const {require, __dirname} = createCommonjsRefs(import.meta);
 
-jest.mock('process', () => ({
-  cwd: () => jest.fn(),
-}));
+const originalCwd = process.cwd;
+afterAll(() => {
+  process.cwd = originalCwd;
+});
 
 describe('.mergeConfigFragment', () => {
   it('should merge properties in like Object.assign', () => {

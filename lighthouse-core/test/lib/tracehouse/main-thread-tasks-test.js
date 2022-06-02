@@ -4,17 +4,16 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-
-/* eslint-env jest */
-
 import {strict as assert} from 'assert';
 
 import MainThreadTasks from '../../../lib/tracehouse/main-thread-tasks.js';
 import TraceProcessor from '../../../lib/tracehouse/trace-processor.js';
 import {taskGroups} from '../../../lib/tracehouse/task-groups.js';
-import pwaTrace from '../../fixtures/traces/progressive-app.json';
-import noTracingStartedTrace from '../../fixtures/traces/no-tracingstarted-m74.json';
 import TracingProcessor from '../../../lib/tracehouse/trace-processor.js';
+import {readJson} from '../../../../root.js';
+
+const pwaTrace = readJson('../../fixtures/traces/progressive-app.json', import.meta);
+const noTracingStartedTrace = readJson('../../fixtures/traces/no-tracingstarted-m74.json', import.meta);
 
 describe('Main Thread Tasks', () => {
   const pid = 1;

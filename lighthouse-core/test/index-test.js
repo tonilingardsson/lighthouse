@@ -4,14 +4,12 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-
-/* eslint-env jest */
-
 import {strict as assert} from 'assert';
 
-import pkg from '../../package.json';
 import lighthouse from '../index.js';
-import {LH_ROOT} from '../../root.js';
+import {LH_ROOT, readJson} from '../../root.js';
+
+const pkg = readJson('package.json');
 
 const {legacyNavigation} = lighthouse;
 const TEST_DIR = `${LH_ROOT}/lighthouse-core/test`;
