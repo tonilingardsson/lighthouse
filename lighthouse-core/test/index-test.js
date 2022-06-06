@@ -127,7 +127,7 @@ describe('Module Tests', function() {
         output: 'html',
       }, {
         settings: {
-          auditMode: __dirname + '/fixtures/artifacts/perflog/',
+          auditMode: TEST_DIR + '/fixtures/artifacts/perflog/',
           formFactor: 'mobile',
         },
         artifacts: [
@@ -156,7 +156,7 @@ describe('Module Tests', function() {
       const exampleUrl = 'https://www.reddit.com/r/nba';
       const results = await lighthouse(exampleUrl, {}, {
         settings: {
-          auditMode: __dirname + '/fixtures/artifacts/perflog/',
+          auditMode: TEST_DIR + '/fixtures/artifacts/perflog/',
           formFactor: 'mobile',
         },
         audits: [],
@@ -168,7 +168,7 @@ describe('Module Tests', function() {
       const exampleUrl = 'https://www.reddit.com/r/nba';
       const results = await lighthouse(exampleUrl, {}, {
         settings: {
-          auditMode: __dirname + '/fixtures/artifacts/perflog/',
+          auditMode: TEST_DIR + '/fixtures/artifacts/perflog/',
           formFactor: 'mobile',
           channel: 'custom',
         },
