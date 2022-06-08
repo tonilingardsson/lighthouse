@@ -10,8 +10,4 @@
 
 set -euxo pipefail
 
-# TODO: mocha doesn't support this
-# see https://github.com/mochajs/mocha/issues/4108
-# $* || $* --onlyFailures
-
-$* || $*
+$* || $* --onlyFailures

@@ -19,6 +19,21 @@ import glob from 'glob';
 
 import {LH_ROOT} from '../../../root.js';
 
+/** @param {string} text */
+function escapeRegex(text) {
+  return text.replace(/[-\\^$*+?.()|[\]{}]/g, '\\$&');
+}
+
+const failedTestsDir = `${LH_ROOT}/.tmp/failing-tests`;
+
+function getFailedTests() {
+  const allFailedTests = [];
+  for (const file of glob.sync('*.json', {cwd: failedTestsDir, absolute: true})) {
+    allFailedTests.push(...JSON.parse(fs.readFileSync(file, 'utf-8')));
+  }
+  return allFailedTests;
+}
+
 // Some tests replace real modules with mocks in the global scope of the test file
 // (outside 'before' lifecycle / a test unit). Before doing any lifecycle stuff, Mocha will load
 // all test files (everything if --no-parallel, else each worker will load a subset of the files
@@ -133,6 +148,9 @@ const rawArgv = y
       type: 'string',
       describe: 'an alias for --grep, to run only tests with matching titles',
     },
+    'onlyFailures': {
+      type: 'boolean',
+    },
   })
   .wrap(y.terminalWidth())
   .argv;
@@ -159,34 +177,38 @@ const defaultTestMatches = [
 const mochaPassThruArgs = argv._.filter(arg => typeof arg !== 'string' || arg.startsWith('--'));
 const filterFilePatterns = argv._.filter(arg => !(typeof arg !== 'string' || arg.startsWith('--')));
 
-// Collect all the possible test files, based off the provided testMatch glob pattern
-// or the default patterns defined above.
-const testsGlob = argv.testMatch || `{${defaultTestMatches.join(',')}}`;
-const allTestFiles = glob.sync(testsGlob, {cwd: LH_ROOT, absolute: true});
+function getTestFiles() {
+  // Collect all the possible test files, based off the provided testMatch glob pattern
+  // or the default patterns defined above.
+  const testsGlob = argv.testMatch || `{${defaultTestMatches.join(',')}}`;
+  const allTestFiles = glob.sync(testsGlob, {cwd: LH_ROOT, absolute: true});
 
-// If provided, filter the test files using a basic string includes on the absolute path of
-// each test file. Map back to a relative path because it's nice to keep the printed commands shorter.
-// Why pass `absolute: true` to glob above? So that this works:
-//     yarn mocha /Users/cjamcl/src/lighthouse/lighthouse-core/test/runner-test.js
-const filteredTests = (
-  filterFilePatterns.length ?
-    allTestFiles.filter((file) => filterFilePatterns.some(pattern => file.includes(pattern))) :
-    allTestFiles
-).map(testPath => path.relative(process.cwd(), testPath));
+  // If provided, filter the test files using a basic string includes on the absolute path of
+  // each test file. Map back to a relative path because it's nice to keep the printed commands shorter.
+  // Why pass `absolute: true` to glob above? So that this works:
+  //     yarn mocha /Users/cjamcl/src/lighthouse/lighthouse-core/test/runner-test.js
+  let filteredTests = (
+    filterFilePatterns.length ?
+      allTestFiles.filter((file) => filterFilePatterns.some(pattern => file.includes(pattern))) :
+      allTestFiles
+  ).map(testPath => path.relative(process.cwd(), testPath));
 
-if (filterFilePatterns.length) {
-  console.log(`applied test filters: ${JSON.stringify(filterFilePatterns, null, 2)}`);
-}
-console.log(`running ${filteredTests.length} test files`);
+  if (argv.onlyFailures) {
+    const failedTests = getFailedTests();
+    if (failedTests.length === 0) throw new Error('no tests failed');
 
-const testsToRunTogether = [];
-const testsToRunIsolated = [];
-for (const test of filteredTests) {
-  if (argv.isolation && testsToIsolate.has(test)) {
-    testsToRunIsolated.push(test);
-  } else {
-    testsToRunTogether.push(test);
+    const titles = getFailedTests().map(failed => failed.title);
+    baseArgs.push(`--grep="${titles.map(escapeRegex).join('|')}"`);
+
+    filteredTests = filteredTests.filter(file => failedTests.some(failed => failed.file === file));
   }
+
+  if (filterFilePatterns.length) {
+    console.log(`applied test filters: ${JSON.stringify(filterFilePatterns, null, 2)}`);
+  }
+  console.log(`running ${filteredTests.length} test files`);
+
+  return filteredTests;
 }
 
 const baseArgs = [
@@ -201,9 +223,17 @@ if (argv.bail) baseArgs.push('--bail');
 if (argv.parallel) baseArgs.push('--parallel');
 baseArgs.push(...mochaPassThruArgs);
 
-let didFail = false;
+const testsToRun = getTestFiles();
+const testsToRunTogether = [];
+const testsToRunIsolated = [];
+for (const test of testsToRun) {
+  if (argv.isolation && testsToIsolate.has(test)) {
+    testsToRunIsolated.push(test);
+  } else {
+    testsToRunTogether.push(test);
+  }
+}
 
-const failedTestsDir = `${LH_ROOT}/.tmp/failing-tests`;
 fs.rmSync(failedTestsDir, {recursive: true, force: true});
 fs.mkdirSync(failedTestsDir, {recursive: true});
 
@@ -225,11 +255,7 @@ function exit(code) {
   // So keep track of failures and re-print them at the very end.
   // See mocha-setup.js afterAll.
 
-  const allFailedTests = [];
-  for (const file of glob.sync('*.json', {cwd: failedTestsDir, absolute: true})) {
-    allFailedTests.push(...JSON.parse(fs.readFileSync(file, 'utf-8')));
-  }
-
+  const allFailedTests = getFailedTests();
   const groupedByFile = new Map();
   for (const failedTest of allFailedTests) {
     const failedTests = groupedByFile.get(failedTest.file) || [];
@@ -252,6 +278,7 @@ function exit(code) {
 }
 
 let numberMochaInvocations = 0;
+let didFail = false;
 
 /**
  * @param {string[]} tests
