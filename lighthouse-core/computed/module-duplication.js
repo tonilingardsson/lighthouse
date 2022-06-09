@@ -100,7 +100,7 @@ class ModuleDuplication {
       for (let i = 0; i < rawMap.sources.length; i++) {
         if (this._shouldIgnoreSource(rawMap.sources[i])) continue;
 
-        const sourceKey = rawMap.sources[i];
+        const sourceKey = (rawMap.sourceRoot || '') + rawMap.sources[i];
         const sourceSize = sizes.files[sourceKey];
         sourceDataArray.push({
           source: ModuleDuplication.normalizeSource(rawMap.sources[i]),

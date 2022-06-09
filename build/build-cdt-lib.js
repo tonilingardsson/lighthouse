@@ -12,10 +12,142 @@ import ts from 'typescript';
 
 import {LH_ROOT} from '../root.js';
 
+/**
+ * @typedef Modification
+ * @property {string} input
+ * @property {string} output
+ * @property {string} template
+ * @property {Record<string, string>} rawCodeToReplace Complicated expressions are hard detect with the TS lib, so instead use this to work with the raw code.
+ * @property {string[]} classesToRemove
+ * @property {string[]} methodsToRemove
+ * @property {string[]} variablesToRemove
+ */
+
 const outDir = `${LH_ROOT}/lighthouse-core/lib/cdt/generated`;
-const files = {
-  'node_modules/chrome-devtools-frontend/front_end/core/sdk/SourceMap.ts': 'SourceMap.js',
-};
+
+/** @type {Modification[]} */
+const modifications = [
+  {
+    input: 'node_modules/chrome-devtools-frontend/front_end/core/sdk/SourceMap.ts',
+    output: `${outDir}/SourceMap.js`,
+    template: [
+      'const Common = require(\'../Common.js\');',
+      'const Platform = require(\'../Platform.js\');',
+      '%sourceFilePrinted%',
+      'module.exports = TextSourceMap;',
+    ].join('\n'),
+    rawCodeToReplace: {
+      /* Original:
+
+        let url = Common.ParsedURL.ParsedURL.completeURL(this.#baseURL, href) || href;
+        const source = sourceMap.sourcesContent && sourceMap.sourcesContent[i];
+        if (url === this.#compiledURLInternal && source) {
+          url = Common.ParsedURL.ParsedURL.concatenate(url, '? [sm]');
+        }
+        if (this.#sourceInfos.has(url)) {
+          continue;
+        }
+        this.#sourceInfos.set(url, new TextSourceMap.SourceInfo(source || null, null));
+        sourcesList.push(url);
+      ----
+      If a source file is the same as the compiled url and there is a sourcesContent,
+      then `entry.sourceURL` (what is returned from .mappings) will have `? [sm]` appended.
+      This is useful in DevTools - to show that a sources panel tab not a real network resource -
+      but for us it is not wanted. The sizing function uses `entry.sourceURL` to index the byte
+      counts, and is further used in the details to specify a file within a source map.
+      */
+      [`url = Common.ParsedURL.ParsedURL.concatenate(url, '? [sm]');`]: '',
+      // Use normal console.warn so we don't need to import CDT's logger.
+      'Common.Console.Console.instance().warn': 'console.warn',
+      // Similar to the reason for removing `url += Common.UIString('? [sm]')`.
+      // The entries in `.mappings` should not have their url property modified.
+      'Common.ParsedURL.ParsedURL.completeURL(this.#baseURL, href)': `''`,
+      // Replace i18n function with a very simple templating function.
+      'i18n.i18n.getLocalizedString.bind(undefined, str_)': (
+        /** @param {string} template @param {object} vars */
+        function(template, vars) {
+          let result = template;
+          for (const [key, value] of Object.entries(vars)) {
+            result = result.replace(new RegExp('{' + key + '}'), value);
+          }
+          return result;
+        }).toString(),
+      // Add some types.
+      // eslint-disable-next-line max-len
+      'mappings(): SourceMapEntry[] {': '/** @return {Array<{lineNumber: number, columnNumber: number, sourceURL?: string, sourceLineNumber: number, sourceColumnNumber: number, name?: string, lastColumnNumber?: number}>} */\nmappings(): SourceMapEntry[] {',
+    },
+    classesToRemove: [],
+    methodsToRemove: [
+      // Not needed.
+      'load',
+      // Not needed.
+      'sourceContentProvider',
+    ],
+    variablesToRemove: [
+      'Common',
+      'CompilerSourceMappingContentProvider_js_1',
+      'i18n',
+      'i18nString',
+      'PageResourceLoader_js_1',
+      'Platform',
+      'str_',
+      'TextUtils',
+      'UIStrings',
+    ],
+  },
+  {
+    input: 'node_modules/chrome-devtools-frontend/front_end/core/common/ParsedURL.ts',
+    output: `${outDir}/ParsedURL.js`,
+    template: '%sourceFilePrinted%',
+    rawCodeToReplace: {},
+    classesToRemove: [],
+    methodsToRemove: [
+      // TODO: look into removing the `Common.ParsedURL.ParsedURL.completeURL` replacement above,
+      // which will also mean including all/most of these methods.
+      'completeURL',
+      'encodedFromParentPathAndName',
+      'encodedPathToRawPathString',
+      'extractExtension',
+      'extractName',
+      'extractOrigin',
+      'extractPath',
+      'fromString',
+      'isValidUrlString',
+      'join',
+      'preEncodeSpecialCharactersInPath',
+      'prepend',
+      'rawPathToEncodedPathString',
+      'rawPathToUrlString',
+      'relativePathToUrlString',
+      'removeWasmFunctionInfoFromURL',
+      'slice',
+      'sliceUrlToEncodedPathString',
+      'split',
+      'splitLineAndColumn',
+      'substr',
+      'substring',
+      'toLowerCase',
+      'trim',
+      'urlFromParentUrlAndName',
+      'urlRegex',
+      'urlRegexInstance',
+      'urlToRawPathString',
+      'urlWithoutHash',
+      'dataURLDisplayName',
+      'isAboutBlank',
+      'isDataURL',
+      'isHttpOrHttps',
+      'isBlobURL',
+      'lastPathComponentWithFragment',
+      'domain',
+      'securityOrigin',
+      'urlWithoutScheme',
+    ],
+    variablesToRemove: [
+      'Platform',
+    ],
+  },
+];
 
 /**
  * @param {string} code
@@ -29,83 +161,17 @@ function assertPresence(code, codeFragments) {
   }
 }
 
-console.log('making modifications ...');
+/**
+ * @param {Modification} modification
+ */
+function doModification(modification) {
+  const {rawCodeToReplace, classesToRemove, methodsToRemove, variablesToRemove} = modification;
 
-for (const [inFilename, outFilename] of Object.entries(files)) {
-  const code = fs.readFileSync(inFilename, 'utf-8');
-
-  /** @type {string[]} */
-  const classesToRemove = [
-    // Currently empty.
-  ];
-  const methodsToRemove = [
-    // Not needed.
-    'load',
-    // Not needed.
-    'sourceContentProvider',
-  ];
-  const variablesToRemove = [
-    'Common',
-    'CompilerSourceMappingContentProvider_js_1',
-    'i18n',
-    'i18nString',
-    'PageResourceLoader_js_1',
-    'Platform',
-    'str_',
-    'TextUtils',
-    'UIStrings',
-  ];
-  // Complicated expressions are hard detect with the TS lib, so instead work with the raw code.
-  const rawCodeToReplace = {
-    /* Original:
-
-      let url = Common.ParsedURL.ParsedURL.completeURL(this.#baseURL, href) || href;
-      const source = sourceMap.sourcesContent && sourceMap.sourcesContent[i];
-      if (url === this.#compiledURLInternal && source) {
-        url = Common.ParsedURL.ParsedURL.concatenate(url, '? [sm]');
-      }
-      if (this.#sourceInfos.has(url)) {
-        continue;
-      }
-      this.#sourceInfos.set(url, new TextSourceMap.SourceInfo(source || null, null));
-      sourcesList.push(url);
-    ----
-    If a source file is the same as the compiled url and there is a sourcesContent,
-    then `entry.sourceURL` (what is returned from .mappings) will have `? [sm]` appended.
-    This is useful in DevTools - to show that a sources panel tab not a real network resource -
-    but for us it is not wanted. The sizing function uses `entry.sourceURL` to index the byte
-    counts, and is further used in the details to specify a file within a source map.
-    */
-    [`url = Common.ParsedURL.ParsedURL.concatenate(url, '? [sm]');`]: '',
-    // Prevents preprending the file entries with the sourceRoot, which just
-    // complicates JSBundle usage.
-    'Common.ParsedURL.ParsedURL.isRelativeURL(href)': 'false',
-    // Use normal console.warn so we don't need to import CDT's logger.
-    'Common.Console.Console.instance().warn': 'console.warn',
-    // Similar to the reason for removing `url += Common.UIString('? [sm]')`.
-    // The entries in `.mappings` should not have their url property modified.
-    'Common.ParsedURL.ParsedURL.completeURL(this.#baseURL, href)': `''`,
-    // Replace i18n function with a very simple templating function.
-    'i18n.i18n.getLocalizedString.bind(undefined, str_)': (
-      /** @param {string} template @param {object} vars */
-      function(template, vars) {
-        let result = template;
-        for (const [key, value] of Object.entries(vars)) {
-          result = result.replace(new RegExp('{' + key + '}'), value);
-        }
-        return result;
-      }).toString(),
-    // Add some types.
-    // eslint-disable-next-line max-len
-    'mappings(): SourceMapEntry[] {': '/** @return {Array<{lineNumber: number, columnNumber: number, sourceURL?: string, sourceLineNumber: number, sourceColumnNumber: number, name?: string, lastColumnNumber?: number}>} */\nmappings(): SourceMapEntry[] {',
-  };
-
-  // Verify that all the above code is present.
+  const code = fs.readFileSync(modification.input, 'utf-8');
   assertPresence(code, Object.keys(rawCodeToReplace));
 
-  let modifiedCode = code;
-
   // First pass - do raw string replacements.
+  let modifiedCode = code;
   for (const [code, replacement] of Object.entries(rawCodeToReplace)) {
     modifiedCode = modifiedCode.replace(code, replacement);
   }
@@ -171,9 +237,10 @@ for (const [inFilename, outFilename] of Object.entries(files)) {
     '// @ts-nocheck\n',
     '// generated by yarn build-cdt-lib\n',
     '"use strict";\n',
-    'const Platform = require(\'../Platform.js\');\n',
-    sourceFilePrinted,
-    'module.exports = TextSourceMap;',
+    modification.template.replace('%sourceFilePrinted%', () => sourceFilePrinted),
   ].join('');
-  fs.writeFileSync(`${outDir}/${outFilename}`, modifiedFile);
+
+  fs.writeFileSync(modification.output, modifiedFile);
 }
+
+modifications.forEach(doModification);
