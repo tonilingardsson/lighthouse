@@ -77,6 +77,8 @@ for (const [inFilename, outFilename] of Object.entries(files)) {
     counts, and is further used in the details to specify a file within a source map.
     */
     [`url = Common.ParsedURL.ParsedURL.concatenate(url, '? [sm]');`]: '',
+    // Prevents preprending the file entries with the sourceRoot, which just
+    // complicates JSBundle usage.
     'Common.ParsedURL.ParsedURL.isRelativeURL(href)': 'false',
     // Use normal console.warn so we don't need to import CDT's logger.
     'Common.Console.Console.instance().warn': 'console.warn',
