@@ -89,11 +89,10 @@ describe('JsBundles computed artifact', () => {
       Object {
         "files": Object {
           "node_modules/browser-pack/_prelude.js": 480,
-          "null": 104,
           "src/foo.js": 98,
         },
         "totalBytes": 718,
-        "unmappedBytes": 36,
+        "unmappedBytes": 140,
       }
     `);
 
