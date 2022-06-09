@@ -5,23 +5,6 @@ const Platform = require('../Platform.js');
 // Copyright 2021 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
-    if (kind === "m")
-        throw new TypeError("Private method is not writable");
-    if (kind === "a" && !f)
-        throw new TypeError("Private accessor was defined without a setter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
-        throw new TypeError("Cannot write private member to an object whose class did not declare it");
-    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
-};
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f)
-        throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver))
-        throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
-var _TextSourceMap_initiator, _TextSourceMap_json, _TextSourceMap_compiledURLInternal, _TextSourceMap_sourceMappingURL, _TextSourceMap_baseURL, _TextSourceMap_mappingsInternal, _TextSourceMap_sourceInfos;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TextSourceMap = exports.SourceMapEntry = exports.Offset = exports.Section = exports.SourceMapV3 = void 0;
 /*
@@ -63,21 +46,40 @@ exports.TextSourceMap = exports.SourceMapEntry = exports.Offset = exports.Sectio
 ;
 ;
 class SourceMapV3 {
+    version;
+    file;
+    sources;
+    sections;
+    mappings;
+    sourceRoot;
+    names;
+    sourcesContent;
     constructor() {
     }
 }
 exports.SourceMapV3 = SourceMapV3;
 class Section {
+    map;
+    offset;
+    url;
     constructor() {
     }
 }
 exports.Section = Section;
 class Offset {
+    line;
+    column;
     constructor() {
     }
 }
 exports.Offset = Offset;
 class SourceMapEntry {
+    lineNumber;
+    columnNumber;
+    sourceURL;
+    sourceLineNumber;
+    sourceColumnNumber;
+    name;
     constructor(lineNumber, columnNumber, sourceURL, sourceLineNumber, sourceColumnNumber, name) {
         this.lineNumber = lineNumber;
         this.columnNumber = columnNumber;
@@ -101,27 +103,27 @@ for (let i = 0; i < base64Digits.length; ++i) {
 }
 const sourceMapToSourceList = new WeakMap();
 class TextSourceMap {
+    #initiator;
+    #json;
+    #compiledURLInternal;
+    #sourceMappingURL;
+    #baseURL;
+    #mappingsInternal;
+    #sourceInfos;
     /**
      * Implements Source Map V3 model. See https://github.com/google/closure-compiler/wiki/Source-Maps
      * for format description.
      */
     constructor(compiledURL, sourceMappingURL, payload, initiator) {
-        _TextSourceMap_initiator.set(this, void 0);
-        _TextSourceMap_json.set(this, void 0);
-        _TextSourceMap_compiledURLInternal.set(this, void 0);
-        _TextSourceMap_sourceMappingURL.set(this, void 0);
-        _TextSourceMap_baseURL.set(this, void 0);
-        _TextSourceMap_mappingsInternal.set(this, void 0);
-        _TextSourceMap_sourceInfos.set(this, void 0);
-        __classPrivateFieldSet(this, _TextSourceMap_initiator, initiator, "f");
-        __classPrivateFieldSet(this, _TextSourceMap_json, payload, "f");
-        __classPrivateFieldSet(this, _TextSourceMap_compiledURLInternal, compiledURL, "f");
-        __classPrivateFieldSet(this, _TextSourceMap_sourceMappingURL, sourceMappingURL, "f");
-        __classPrivateFieldSet(this, _TextSourceMap_baseURL, (sourceMappingURL.startsWith('data:') ? compiledURL : sourceMappingURL), "f");
-        __classPrivateFieldSet(this, _TextSourceMap_mappingsInternal, null, "f");
-        __classPrivateFieldSet(this, _TextSourceMap_sourceInfos, new Map(), "f");
-        if (__classPrivateFieldGet(this, _TextSourceMap_json, "f").sections) {
-            const sectionWithURL = Boolean(__classPrivateFieldGet(this, _TextSourceMap_json, "f").sections.find(section => Boolean(section.url)));
+        this.#initiator = initiator;
+        this.#json = payload;
+        this.#compiledURLInternal = compiledURL;
+        this.#sourceMappingURL = sourceMappingURL;
+        this.#baseURL = (sourceMappingURL.startsWith('data:') ? compiledURL : sourceMappingURL);
+        this.#mappingsInternal = null;
+        this.#sourceInfos = new Map();
+        if (this.#json.sections) {
+            const sectionWithURL = Boolean(this.#json.sections.find(section => Boolean(section.url)));
             if (sectionWithURL) {
                 console.warn(`SourceMap "${sourceMappingURL}" contains unsupported "URL" field in one of its sections.`);
             }
@@ -129,16 +131,16 @@ class TextSourceMap {
         this.eachSection(this.parseSources.bind(this));
     }
     compiledURL() {
-        return __classPrivateFieldGet(this, _TextSourceMap_compiledURLInternal, "f");
+        return this.#compiledURLInternal;
     }
     url() {
-        return __classPrivateFieldGet(this, _TextSourceMap_sourceMappingURL, "f");
+        return this.#sourceMappingURL;
     }
     sourceURLs() {
-        return [...__classPrivateFieldGet(this, _TextSourceMap_sourceInfos, "f").keys()];
+        return [...this.#sourceInfos.keys()];
     }
     embeddedContentByURL(sourceURL) {
-        const entry = __classPrivateFieldGet(this, _TextSourceMap_sourceInfos, "f").get(sourceURL);
+        const entry = this.#sourceInfos.get(sourceURL);
         if (!entry) {
             return null;
         }
@@ -215,15 +217,15 @@ class TextSourceMap {
     }
     /** @return {Array<{lineNumber: number, columnNumber: number, sourceURL?: string, sourceLineNumber: number, sourceColumnNumber: number, name?: string, lastColumnNumber?: number}>} */
     mappings() {
-        if (__classPrivateFieldGet(this, _TextSourceMap_mappingsInternal, "f") === null) {
-            __classPrivateFieldSet(this, _TextSourceMap_mappingsInternal, [], "f");
+        if (this.#mappingsInternal === null) {
+            this.#mappingsInternal = [];
             this.eachSection(this.parseMap.bind(this));
-            __classPrivateFieldSet(this, _TextSourceMap_json, null, "f");
+            this.#json = null;
         }
-        return __classPrivateFieldGet(this, _TextSourceMap_mappingsInternal, "f");
+        return this.#mappingsInternal;
     }
     reversedMappings(sourceURL) {
-        const info = __classPrivateFieldGet(this, _TextSourceMap_sourceInfos, "f").get(sourceURL);
+        const info = this.#sourceInfos.get(sourceURL);
         if (!info) {
             return [];
         }
@@ -249,14 +251,14 @@ class TextSourceMap {
         }
     }
     eachSection(callback) {
-        if (!__classPrivateFieldGet(this, _TextSourceMap_json, "f")) {
+        if (!this.#json) {
             return;
         }
-        if (!__classPrivateFieldGet(this, _TextSourceMap_json, "f").sections) {
-            callback(__classPrivateFieldGet(this, _TextSourceMap_json, "f"), 0, 0);
+        if (!this.#json.sections) {
+            callback(this.#json, 0, 0);
             return;
         }
-        for (const section of __classPrivateFieldGet(this, _TextSourceMap_json, "f").sections) {
+        for (const section of this.#json.sections) {
             callback(section.map, section.offset.line, section.offset.column);
         }
     }
@@ -280,12 +282,12 @@ class TextSourceMap {
             }
             let url = '' || href;
             const source = sourceMap.sourcesContent && sourceMap.sourcesContent[i];
-            if (url === __classPrivateFieldGet(this, _TextSourceMap_compiledURLInternal, "f") && source) {
+            if (url === this.#compiledURLInternal && source) {
             }
-            if (__classPrivateFieldGet(this, _TextSourceMap_sourceInfos, "f").has(url)) {
+            if (this.#sourceInfos.has(url)) {
                 continue;
             }
-            __classPrivateFieldGet(this, _TextSourceMap_sourceInfos, "f").set(url, new TextSourceMap.SourceInfo(source || null, null));
+            this.#sourceInfos.set(url, new TextSourceMap.SourceInfo(source || null, null));
             sourcesList.push(url);
         }
         sourceMapToSourceList.set(sourceMap, sourcesList);
@@ -386,13 +388,12 @@ class TextSourceMap {
         const mappings = this.mappings();
         if (mappings.length > 0) {
             const firstEntry = mappings[0];
-            return (firstEntry === null || firstEntry === void 0 ? void 0 : firstEntry.lineNumber) === 0 || firstEntry.columnNumber === 0;
+            return firstEntry?.lineNumber === 0 || firstEntry.columnNumber === 0;
         }
         return false;
     }
 }
 exports.TextSourceMap = TextSourceMap;
-_TextSourceMap_initiator = new WeakMap(), _TextSourceMap_json = new WeakMap(), _TextSourceMap_compiledURLInternal = new WeakMap(), _TextSourceMap_sourceMappingURL = new WeakMap(), _TextSourceMap_baseURL = new WeakMap(), _TextSourceMap_mappingsInternal = new WeakMap(), _TextSourceMap_sourceInfos = new WeakMap();
 (function (TextSourceMap) {
     // TODO(crbug.com/1172300) Ignored during the jsdoc to ts migration
     // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -404,6 +405,8 @@ _TextSourceMap_initiator = new WeakMap(), _TextSourceMap_json = new WeakMap(), _
     // eslint-disable-next-line @typescript-eslint/naming-convention
     TextSourceMap._VLQ_CONTINUATION_MASK = 1 << 5;
     class StringCharIterator {
+        string;
+        position;
         constructor(string) {
             this.string = string;
             this.position = 0;
@@ -420,6 +423,8 @@ _TextSourceMap_initiator = new WeakMap(), _TextSourceMap_json = new WeakMap(), _
     }
     TextSourceMap.StringCharIterator = StringCharIterator;
     class SourceInfo {
+        content;
+        reverseMappings;
         constructor(content, reverseMappings) {
             this.content = content;
             this.reverseMappings = reverseMappings;

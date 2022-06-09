@@ -111,11 +111,11 @@ for (const [inFilename, outFilename] of Object.entries(files)) {
   }
 
   const codeTranspiledToCommonJS = ts.transpileModule(modifiedCode, {
-    compilerOptions: {module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2019},
+    compilerOptions: {module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022},
   }).outputText;
 
   const sourceFile = ts.createSourceFile('', codeTranspiledToCommonJS,
-    ts.ScriptTarget.ES2019, true, ts.ScriptKind.JS);
+    ts.ScriptTarget.ES2022, true, ts.ScriptKind.JS);
   const simplePrinter = ts.createPrinter({newLine: ts.NewLineKind.LineFeed});
 
   // Second pass - use tsc to remove all references to certain variables.
