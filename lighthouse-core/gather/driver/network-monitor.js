@@ -90,7 +90,10 @@ class NetworkMonitor {
     this._frameNavigations = [];
     this._sessions = new Map();
     this._networkRecorder = new NetworkRecorder();
-    this._targetManager = new TargetManager(this._session);
+    /** @type {LH.Puppeteer.CDPSession} */
+    // @ts-expect-error - temporarily reach in to get CDPSession
+    const rootCdpSession = this._session._cdpSession;
+    this._targetManager = new TargetManager(rootCdpSession);
 
     /**
      * Reemit the same network recorder events.
@@ -103,7 +106,7 @@ class NetworkMonitor {
     };
 
     this._networkRecorder.on('requeststarted', reEmit('requeststarted'));
-    this._networkRecorder.on('requestloaded', reEmit('requestloaded'));
+    this._networkRecorder.on('requestfinished', reEmit('requestfinished'));
 
     this._session.on('Page.frameNavigated', this._onFrameNavigated);
     await this._session.sendCommand('Page.enable');

@@ -13,10 +13,10 @@ const DEFAULT_PROTOCOL_TIMEOUT = 30000;
 /** @implements {LH.Gatherer.FRProtocolSession} */
 class ProtocolSession {
   /**
-   * @param {LH.Puppeteer.CDPSession} session
+   * @param {LH.Puppeteer.CDPSession} cdpSession
    */
-  constructor(session) {
-    this._session = session;
+  constructor(cdpSession) {
+    this._cdpSession = cdpSession;
     /** @type {LH.Crdp.Target.TargetInfo|undefined} */
     this._targetInfo = undefined;
     /** @type {number|undefined} */
@@ -27,6 +27,7 @@ class ProtocolSession {
 
   sessionId() {
     return this._targetInfo && this._targetInfo.type === 'iframe' ?
+      // TODO: use this._session.id() for real session id.
       this._targetInfo.targetId :
       undefined;
   }
@@ -64,7 +65,7 @@ class ProtocolSession {
    * @param {(...args: LH.CrdpEvents[E]) => void} callback
    */
   on(eventName, callback) {
-    this._session.on(eventName, /** @type {*} */ (callback));
+    this._cdpSession.on(eventName, /** @type {*} */ (callback));
   }
 
   /**
@@ -74,28 +75,7 @@ class ProtocolSession {
    * @param {(...args: LH.CrdpEvents[E]) => void} callback
    */
   once(eventName, callback) {
-    this._session.once(eventName, /** @type {*} */ (callback));
-  }
-
-  /**
-   * Bind to the puppeteer `sessionattached` listener and return an LH ProtocolSession.
-   * @param {(session: ProtocolSession) => void} callback
-   */
-  addSessionAttachedListener(callback) {
-    /** @param {LH.Puppeteer.CDPSession} session */
-    const listener = session => callback(new ProtocolSession(session));
-    this._callbackMap.set(callback, listener);
-    this._getConnection().on('sessionattached', listener);
-  }
-
-  /**
-   * Unbind to the puppeteer `sessionattached` listener.
-   * @param {(session: ProtocolSession) => void} callback
-   */
-  removeSessionAttachedListener(callback) {
-    const listener = this._callbackMap.get(callback);
-    if (!listener) return;
-    this._getConnection().off('sessionattached', listener);
+    this._cdpSession.once(eventName, /** @type {*} */ (callback));
   }
 
   /**
@@ -114,7 +94,7 @@ class ProtocolSession {
       sessionId: this.sessionId(),
     });
     this._callbackMap.set(callback, listener);
-    this._session.on('*', /** @type {*} */ (listener));
+    this._cdpSession.on('*', /** @type {*} */ (listener));
   }
 
   /**
@@ -123,7 +103,7 @@ class ProtocolSession {
   removeProtocolMessageListener(callback) {
     const listener = this._callbackMap.get(callback);
     if (!listener) return;
-    this._session.off('*', /** @type {*} */ (listener));
+    this._cdpSession.off('*', /** @type {*} */ (listener));
   }
 
   /**
@@ -133,7 +113,7 @@ class ProtocolSession {
    * @param {(...args: LH.CrdpEvents[E]) => void} callback
    */
   off(eventName, callback) {
-    this._session.off(eventName, /** @type {*} */ (callback));
+    this._cdpSession.off(eventName, /** @type {*} */ (callback));
   }
 
   /**
@@ -156,7 +136,7 @@ class ProtocolSession {
       }));
     });
 
-    const resultPromise = this._session.send(method, ...params);
+    const resultPromise = this._cdpSession.send(method, ...params);
     const resultWithTimeoutPromise = Promise.race([resultPromise, timeoutPromise]);
 
     return resultWithTimeoutPromise.finally(() => {
@@ -169,14 +149,8 @@ class ProtocolSession {
    * @return {Promise<void>}
    */
   async dispose() {
-    this._session.removeAllListeners();
-    await this._session.detach();
-  }
-
-  _getConnection() {
-    const connection = this._session.connection();
-    if (!connection) throw new Error('Connection has been closed.');
-    return connection;
+    this._cdpSession.removeAllListeners();
+    await this._cdpSession.detach();
   }
 }
 
